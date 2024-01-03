@@ -343,8 +343,11 @@ class TextConstant {
   //patient
   //adress
   static var addressType = 'Address type';
+  static var residenceType = 'Residence type';
   static var selectAddress = 'Select address';
   static var firstLine = 'First line';
+  static var addressTitle = 'Address';
+  static var enterAddressHere = 'Address';
   static var firstLineHere = 'Enter first line of address here';
   static var firstLineHereRequired = 'Please enter First line';
   static var localityRequired = 'Please enter locality';
@@ -410,7 +413,10 @@ class TextConstant {
   static var entername = 'Enter name here';
   static var whatAreYouBorrow = 'Who are you borrowing for?';
   static var treatmentName = 'Treatment name';
+  static var nameOfPatient = 'Name of the patient';
+  static var relationWithPatient = 'Your relationship to the patient';
   static var enterTreatmentName = 'Enter treatment name';
+  static var enterNameOfPatient = 'Enter patient name';
   static var enterCreditAmount = 'Enter credit amount';
   static var doctorNameRequired = 'Please enter doctor name';
   static var clinicNameOpotional = 'Clinic name';
@@ -419,6 +425,8 @@ class TextConstant {
   static var enterHere = 'Enter here';
   static var creditAmountRequired = 'Please enter credit amount';
   static var treatmentNameRequired = 'Please enter treatment name';
+  static var patientNameRequired = 'Please enter patient name';
+  static var selectRelation = 'Please select relation';
   static var creditPurpose = 'Please enter purpose of credit';
   static var creditAmount = 'Credit amount';
   static var selectEmi = 'Select EMI options';
@@ -466,8 +474,11 @@ class TextConstant {
 
   //EmployementDetailScreen
   static var emplyomentDetails = 'Employment Details';
-  static var employmentType = 'Employment type';
-  static var selectEmployer = 'Select employer';
+  static var selectEmploymentType = 'Select employment type';
+  // static var selectEmployer = 'Select employer';
+  static var selectCurrentEmployer = 'Select current employer';
+  static var buisnessType = 'Type of business';
+  static var buisnessName = 'Name of business';
   static var salaryCredit = 'Salary credit day';
   static var day = 'Day';
   static var salaryCreditRequired = 'Salary credit date required';
@@ -545,14 +556,22 @@ class TextConstant {
 
   //PersonalDetailScreen
   static var panVerified = 'PAN verified!';
-  static var please = 'Please verify your details';
+  static var please = 'Please select and verify your details';
   static var panNo = 'PAN number';
+  static var provideContact = 'Provide a contact number for reference';
   static var fullNamePan = 'Full name (as per PAN)';
+  static var ownerNameTitle = 'Who is the owner of this number?';
+  static var ownerNameHint = 'Name of owner of the number';
+  static var relationWithPhone = 'What is your relation to them?';
   static var enterValidPan = 'Please enter valid PAN number';
   static var gender = 'Gender';
+  static var isMarried = 'Are you married?';
   static var dobRequired = 'Please enter dob';
   static var alternate = 'Alternate number (Optional)';
   static var pleaseVerify = 'Please select and verify your details';
+  static var referenceText = 'Reference details';
+  static var relationNote =
+      'Note: The reference has to be your immediate relation.';
 
   //received
   static var paymentReceived = 'Payment Received!';

@@ -1,6 +1,7 @@
 import 'package:CarePay/components/loader.dart';
 import 'package:CarePay/respository/patientResp/creditDetailRepository.dart';
 import 'package:CarePay/screens/homeScreen.dart';
+import 'package:CarePay/screens/patientScreens/tradeFareFlow/personalDetail.dart';
 
 // import 'package:CarePay/screens/patientScreens/kycVerification.dart';
 import 'package:CarePay/utils/utils.dart';
@@ -57,11 +58,6 @@ class CreditDetailController with ChangeNotifier {
 
   var _totalEmi = "";
   get totalEmi => _totalEmi;
-
-  var borrowFor = ["Myself", "Someone else"];
-
-  var _borrowForValue = "";
-  get borrowForValue => _borrowForValue;
 
   bool _totalEmiError = false;
   bool get totalEmiError => _totalEmiError;
@@ -204,13 +200,70 @@ class CreditDetailController with ChangeNotifier {
   }
 
   //  new flow
+  var borrowFor = ["Myself", "Someone else"];
+  var relations = ["Spouse", "Father", "Mother", "Brother", "Sister"];
+
+  String? _relationValue;
+  String? get relationValue => _relationValue;
+  bool _relationError = false;
+  bool get relationError => _relationError;
+
+  var _borrowForValue = "";
+  get borrowForValue => _borrowForValue;
 
   final creditAmountController = TextEditingController();
   final treatmentNameController = TextEditingController();
   final fullNameController = TextEditingController();
+  final patientNameController = TextEditingController();
 
   setBorrowFor(value) {
     _borrowForValue = value;
     notifyListeners();
+  }
+
+  setRelationError(value) {
+    _relationError = value;
+    notifyListeners();
+  }
+
+  setRelations(value) {
+    if (value.toString() != "Select Relation") {
+      _relationValue = value.toString();
+      _relationError = false;
+      notifyListeners();
+    }
+  }
+
+  handleSubmitCreditDetails(context) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    var userId = pref.getString('userId').toString();
+
+    var doctorId = pref.getString('doctorId');
+    var doctorName = pref.getString('doctorName');
+
+    var payload = {
+      "userId": userId.toString(),
+      "doctorName": doctorName.toString(),
+      "doctorId": doctorId.toString(),
+      "loanReason": treatmentNameController.text.toString(),
+      "loanAmount": creditAmountController.text.toString(),
+      "formStatus": ""
+    };
+    if (borrowForValue.toString() == "Someone else") {
+      print("inside if cond");
+      payload = {
+        ...payload,
+        "patientName": patientNameController.text.toString(),
+        "relationshipWithPatient": relationValue.toString()
+      };
+      notifyListeners();
+    }
+    print(payload);
+    Navigator.push(
+      context,
+      PageTransition(
+          type: PageTransitionType.rightToLeftWithFade,
+          child: PersonalDetailScreen()),
+    );
   }
 }

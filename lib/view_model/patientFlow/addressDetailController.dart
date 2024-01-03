@@ -1,6 +1,7 @@
 import 'package:CarePay/components/loader.dart';
 import 'package:CarePay/respository/patientResp/addressDetailRepository.dart';
 import 'package:CarePay/respository/patientResp/cibilDataDecentro.dart';
+import 'package:CarePay/screens/patientScreens/tradeFareFlow/employmentDetails.dart';
 // import 'package:CarePay/screens/patientScreens/employmentDetails.dart';
 import 'package:CarePay/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,6 +15,7 @@ class AddressDetailController with ChangeNotifier {
   final _myCibilRepo = CibilDataDecentro();
 
   final lineController = TextEditingController();
+  final addressController = TextEditingController();
   final localityController = TextEditingController();
   final landmarkController = TextEditingController();
   final pincodeController = TextEditingController();
@@ -35,8 +37,10 @@ class AddressDetailController with ChangeNotifier {
   bool _cibilVisibility = false;
   bool get cibilVisibility => _cibilVisibility;
 
-  String? _addressDropdownValue;
-  String? get addressDropdownValue => _addressDropdownValue;
+  String? _residenceDropdownValue;
+  String? get residenceDropdownValue => _residenceDropdownValue;
+  String? _addressTypeValue;
+  String? get addressTypeValue => _addressTypeValue;
 
   String? _allAddressesDropdownValue;
   String? get allAddressesDropdownValue => _allAddressesDropdownValue;
@@ -49,9 +53,16 @@ class AddressDetailController with ChangeNotifier {
 
   bool _pinCodeErrorCode = false;
   bool get pinCodeErrorCode => _pinCodeErrorCode;
+  bool _addressTypeError = false;
+  bool get addressTypeError => _addressTypeError;
+  bool _stateDropdownError = false;
+  bool get stateDropdownError => _stateDropdownError;
+  bool _residenceTypeError = false;
+  bool get residenceTypeError => _residenceTypeError;
 
+  var addressTypeOptions = ["Current", "Permanent"];
   var allAddressesDropDown = [];
-  var addressDropDown = [
+  var residenceDropdown = [
     "Owned by self",
     "Owned by Parents",
     "Rented by self",
@@ -122,7 +133,7 @@ class AddressDetailController with ChangeNotifier {
                 : "";
         notifyListeners();
         if (response['addressInfo']?[0]?['postal'] != null) {
-          await fetchPinCodeDetail();
+          await fetchPinCodeDetail(context);
         }
       }
       _cibilVisibility = true;
@@ -139,7 +150,7 @@ class AddressDetailController with ChangeNotifier {
       // print(response['mobileNumber']);
       if (response['addressType'] != null &&
           response['addressType'].toString() != "null") {
-        _addressDropdownValue = response['addressType'] != null
+        _residenceDropdownValue = response['addressType'] != null
             ? response['addressType'].toString()
             : "";
       }
@@ -174,34 +185,63 @@ class AddressDetailController with ChangeNotifier {
             item['postal'] != null ? item['postal'].toString() : "";
         notifyListeners();
         if (item['postal'] != null) {
-          await fetchPinCodeDetail();
+          await fetchPinCodeDetail(context);
         }
       }
     }
-    isEmpty();
+
     notifyListeners();
   }
 
-  setAddressTypeValue(value) {
-    _addressDropdownValue = value.toString();
-    isEmpty();
+  setResidenceTypeValue(value) {
+    _residenceDropdownValue = value.toString();
+
+    _residenceTypeError = false;
+    notifyListeners();
+  }
+
+  setAddressType(value) {
+    _addressTypeValue = value.toString();
+
+    _addressTypeError = false;
     notifyListeners();
   }
 
   setStateDropdown(value) {
     _stateDropdownValue = value.toString();
-    isEmpty();
+    _stateDropdownError = false;
+
     notifyListeners();
   }
 
-  bool isEmpty() {
+  setAddressTypeError(value) {
+    _addressTypeError = value;
+
+    _addressTypeError = false;
+    notifyListeners();
+  }
+
+  bool isEmptyy() {
+    print("inside emptyy");
     // setState(() {
-    if (addressDropdownValue != null &&
+    if (residenceDropdownValue != null &&
         stateDropdownValue != null &&
-        stateDropdownValue != "Select state") {
+        stateDropdownValue != "Select state" &&
+        addressTypeValue != null) {
       return true;
       // _isButtonEnabled = true;
     } else {
+      if (addressTypeValue == null || addressTypeValue.toString().isEmpty) {
+        _addressTypeError = true;
+      }
+      if (residenceDropdownValue == null ||
+          residenceDropdownValue.toString().isEmpty) {
+        _residenceTypeError = true;
+      }
+      if (stateDropdownValue == null || stateDropdownValue.toString().isEmpty) {
+        _stateDropdownError = true;
+      }
+      notifyListeners();
       return false;
       // _isButtonEnabled = false;
     }
@@ -210,7 +250,9 @@ class AddressDetailController with ChangeNotifier {
     // return isButtonEnabled;
   }
 
-  fetchPinCodeDetail() async {
+  fetchPinCodeDetail(context) async {
+    print("fetching pincode");
+    print(pincodeController.text.toString());
     FetchLoader().fetchData(context, "Fetching pincode details");
     print("here");
     try {
@@ -231,11 +273,12 @@ class AddressDetailController with ChangeNotifier {
           notifyListeners();
           _stateDropdownValue =
               res['state'] != null ? res['state'].toString() : "Select state";
+          _stateDropdownError = false;
         }
         notifyListeners();
         Loader().loaderClose(context);
       } else {
-        this.cityController.text = "";
+        cityController.text = "";
         _stateDropdownValue = "Select state";
 
         Loader().loaderClose(context);
@@ -270,7 +313,7 @@ class AddressDetailController with ChangeNotifier {
         payload = {
           ...response,
           "userId": userId.toString(),
-          "addressType": addressDropdownValue.toString(),
+          "addressType": residenceDropdownValue.toString(),
           "address": lineController.text.toString(),
           "locality": localityController.text.toString(),
           "landmark": landmarkController.text.toString(),
@@ -282,7 +325,7 @@ class AddressDetailController with ChangeNotifier {
       } else {
         payload = {
           "userId": userId.toString(),
-          "addressType": addressDropdownValue.toString(),
+          "addressType": residenceDropdownValue.toString(),
           "address": lineController.text.toString(),
           "locality": localityController.text.toString(),
           "landmark": landmarkController.text.toString(),
@@ -301,12 +344,12 @@ class AddressDetailController with ChangeNotifier {
         Loader().loaderClose(context);
         // print('hii');
 
-        // Navigator.push(
-        //   context,
-        //   PageTransition(
-        //       type: PageTransitionType.rightToLeftWithFade,
-        //       child: EmploymentDetailScreen()),
-        // );
+        Navigator.push(
+          context,
+          PageTransition(
+              type: PageTransitionType.rightToLeftWithFade,
+              child: EmploymentDetailScreen()),
+        );
       } else {
         Loader().loaderClose(context);
         Utils.toastMessage(res['data'].toString());
@@ -315,5 +358,14 @@ class AddressDetailController with ChangeNotifier {
       Loader().loaderClose(context);
       Utils.toastMessage("Check Internet Connection");
     }
+  }
+
+  handleTemp(context) {
+    Navigator.push(
+      context,
+      PageTransition(
+          type: PageTransitionType.rightToLeftWithFade,
+          child: EmploymentDetailScreen()),
+    );
   }
 }

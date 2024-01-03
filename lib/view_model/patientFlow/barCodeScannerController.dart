@@ -3,6 +3,7 @@ import 'package:CarePay/screens/patientScreens/confirmationPage.dart';
 import 'package:CarePay/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BarCodeScannerController with ChangeNotifier {
   final _myRepo = HomeMainRepository();
@@ -31,6 +32,7 @@ class BarCodeScannerController with ChangeNotifier {
           if (res['data'] != "" && res['data'] != null) {
             _previousId = "";
             notifyListeners();
+
             await Navigator.pushReplacement(
               context,
               PageTransition(

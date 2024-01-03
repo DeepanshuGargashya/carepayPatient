@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:CarePay/screens/homeScreen.dart';
+import 'package:CarePay/screens/patientScreens/creditDetails.dart';
 // import 'package:CarePay/screens/patientScreens/EMandate.dart';
 // import 'package:CarePay/screens/patientScreens/addressDetail.dart';
 // import 'package:CarePay/screens/patientScreens/allUnderProcessScreens/bankUnderProcess.dart';
@@ -256,86 +257,93 @@ class MobileVerificationController with ChangeNotifier {
 
   dynamic fetchFormStatus() async {
     // Loader().fetchData(context);
-    var path;
+    dynamic path = HomeScreen();
     try {
       final SharedPreferences pref = await SharedPreferences.getInstance();
       var userId = pref.getString('userId');
       if (userId != null && userId != '') {
         var res = await _myRepo.getFormStatusApi(userId.toString());
+        print(res);
+        print(res['status']);
+        print(res?['status']);
         if (res?['status'] == 200) {
+          print("inside status 200");
           // Loader().loaderClose(context);
           var stage = res['data'].toString();
 
-          // switch (stage) {
-          //   case "Basic":
-          //     path = AddressDetailScreen();
-          //     break;
-          //   case "Address":
-          //     path = EmploymentDetailScreen();
-          //     break;
-          //   case "Occupation":
-          //     path = BankDetailScreen();
-          //     break;
-          //   case "BankDetails":
-          //     path = BankAccountStatementScreen();
-          //     break;
-          //   case "BankStatement":
-          //     path = CreditDetailScreen();
-          //     // path = "LoanDetails";
-          //     break;
-          //   case "LoanDetails":
-          //     path = KYCVerificationScreen();
-          //     break;
-          //   case "CREATE_CUSTOMER":
-          //     path = KYCVerificationScreen();
-          //     break;
-          //   case "KYC_INITIATED":
-          //     path = KYCVerificationScreen();
-          //     break;
-          //   case "KYC_COMPLETED":
-          //     path = BankUnderProcessScreen();
-          //     break;
-          //   case "DOCUMENT_UPLOAD":
-          //     path = BankUnderProcessScreen();
-          //     break;
-          //   case "DOCUMENT_VERIFIED":
-          //     path = BankUnderProcessScreen();
-          //     break;
-          //   case "BANK_DETAILS":
-          //     path = LoanUnderProcessScreen();
-          //     break;
-          //   case "BANK_DETAILS_VERIFIED":
-          //     path = CreditAgreementScreen();
-          //     break;
-          //   case "ESIGN_INITIATED":
-          //     path = CreditAgreementScreen();
-          //     break;
-          //   case "ESIGN_COMPLETED":
-          //     path = EMandateScreen();
-          //     break;
-          //   case "EMANDATE_INITIATED":
-          //     path = EMandateScreen();
-          //     break;
-          //   case "EMANDATE_COMPLETED":
-          //     path = EMandateAfter();
-          //     break;
-          //   case "LOAN_APPLIED":
-          //     // path = EMandateAfter();
-          //     path = MakePaymentUnderProcessScreen();
-          //     break;
-          //   case "LOAN_APPROVED":
-          //     path = UnderLoanProcessScreen();
-          //     break;
-          //   case "DISBURSED":
-          //     path = UnderLoanProcessScreen();
-          //     // path = DashboardScreen();
-          //     break;
-          //   case "PAID":
-          //     path = DashboardScreen();
-          //     break;
-          //   default:
-          //     path = PersonalDetailScreen();
-          // }
+          switch (stage) {
+            case "Incomplete application":
+              path = const CreditDetails();
+              break;
+            case "Basic":
+              // path = AddressDetailScreen();
+              break;
+            case "Address":
+              // path = EmploymentDetailScreen();
+              break;
+            case "Occupation":
+              // path = BankDetailScreen();
+              break;
+            case "BankDetails":
+              // path = BankAccountStatementScreen();
+              break;
+            case "BankStatement":
+              // path = CreditDetailScreen();
+              // path = "LoanDetails";
+              break;
+            case "LoanDetails":
+              // path = KYCVerificationScreen();
+              break;
+            case "CREATE_CUSTOMER":
+              // path = KYCVerificationScreen();
+              break;
+            case "KYC_INITIATED":
+              // path = KYCVerificationScreen();
+              break;
+            case "KYC_COMPLETED":
+              // path = BankUnderProcessScreen();
+              break;
+            case "DOCUMENT_UPLOAD":
+              // path = BankUnderProcessScreen();
+              break;
+            case "DOCUMENT_VERIFIED":
+              // path = BankUnderProcessScreen();
+              break;
+            case "BANK_DETAILS":
+              // path = LoanUnderProcessScreen();
+              break;
+            case "BANK_DETAILS_VERIFIED":
+              // path = CreditAgreementScreen();
+              break;
+            case "ESIGN_INITIATED":
+              // path = CreditAgreementScreen();
+              break;
+            case "ESIGN_COMPLETED":
+              // path = EMandateScreen();
+              break;
+            case "EMANDATE_INITIATED":
+              // path = EMandateScreen();
+              break;
+            case "EMANDATE_COMPLETED":
+              // path = EMandateAfter();
+              break;
+            case "LOAN_APPLIED":
+              // path = EMandateAfter();
+              // path = MakePaymentUnderProcessScreen();
+              break;
+            case "LOAN_APPROVED":
+              // path = UnderLoanProcessScreen();
+              break;
+            case "DISBURSED":
+              // path = UnderLoanProcessScreen();
+              // path = DashboardScreen();
+              break;
+            case "PAID":
+              // path = DashboardScreen();
+              break;
+            default:
+              path = const CreditDetails();
+          }
         } else {
           SharedPreferences preferences = await SharedPreferences.getInstance();
           await preferences.clear();

@@ -21,7 +21,7 @@ class EmploymentDetailController with ChangeNotifier {
   final scrollController = ScrollController();
   final monthlyIncomeController = TextEditingController();
   final monthlyFamilyIncomeController = TextEditingController();
-  final currentCompanyNameController = TextEditingController();
+  final buisnessNameController = TextEditingController();
   final currentCompanyAdd1Controller = TextEditingController();
   final currentCompanyAdd2Controller = TextEditingController();
   final currentCompanyPincodeController = TextEditingController();
@@ -57,6 +57,10 @@ class EmploymentDetailController with ChangeNotifier {
   // dropdown variables
   String? _employmentTypeDropdownValue = "Salaried";
   String? get employmentTypeDropdownValue => _employmentTypeDropdownValue;
+  String? _currentEmployerDropdownValue;
+  String? get currentEmployerDropdownValue => _currentEmployerDropdownValue;
+  String? _buisnessTypeDropdownValue;
+  String? get buisnessTypeDropdownValue => _buisnessTypeDropdownValue;
 
   String? _industryDropdownValue;
   String? get industryDropdownValue => _industryDropdownValue;
@@ -99,9 +103,9 @@ class EmploymentDetailController with ChangeNotifier {
     "Agriculture and Allied",
     "Other"
   ];
-  var employmentTypeDropDown = [
-    "Salaried",
-  ];
+  var employmentTypeDropDown = ["Salaried", "Self-employed"];
+  var currentEmployerDropDown = [];
+  var buisnessTypeDropDown = [];
 
   bool checkValidExp() {
     var jobExp = (fieldTJMonths.text.toString() != '' &&
@@ -247,10 +251,9 @@ class EmploymentDetailController with ChangeNotifier {
           response['monthlyFamilyIncome'] != null
               ? response['monthlyFamilyIncome'].toString()
               : "";
-      this.currentCompanyNameController.text =
-          response['organizationName'] != null
-              ? response['organizationName'].toString()
-              : "";
+      this.buisnessNameController.text = response['organizationName'] != null
+          ? response['organizationName'].toString()
+          : "";
       this.currentCompanyAdd1Controller.text =
           response['workplaceAddress1'] != null
               ? response['workplaceAddress1'].toString()
@@ -352,7 +355,7 @@ class EmploymentDetailController with ChangeNotifier {
                       ? int.parse(monthlyFamilyIncomeController.text.toString())
                       : "",
               "employmentType": employmentTypeDropdownValue.toString(),
-              "organizationName": currentCompanyNameController.text.toString(),
+              "organizationName": buisnessNameController.text.toString(),
               "workplaceAddress1": currentCompanyAdd1Controller.text.toString(),
               "workplaceAddress2": currentCompanyAdd2Controller.text.toString(),
               "workplacePincode":
@@ -387,7 +390,7 @@ class EmploymentDetailController with ChangeNotifier {
                       ? int.parse(monthlyFamilyIncomeController.text.toString())
                       : "",
               "employmentType": employmentTypeDropdownValue.toString(),
-              "organizationName": currentCompanyNameController.text.toString(),
+              "organizationName": buisnessNameController.text.toString(),
               "workplaceAddress1": currentCompanyAdd1Controller.text.toString(),
               "workplaceAddress2": currentCompanyAdd2Controller.text.toString(),
               "workplacePincode":

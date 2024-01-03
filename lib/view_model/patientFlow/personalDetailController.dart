@@ -3,6 +3,7 @@ import 'package:CarePay/components/loader.dart';
 import 'package:CarePay/respository/patientResp/cibilDataDecentro.dart';
 import 'package:CarePay/respository/patientResp/creditDetailRepository.dart';
 import 'package:CarePay/respository/patientResp/personalDetailRepository.dart';
+import 'package:CarePay/screens/patientScreens/tradeFareFlow/addressDetail.dart';
 // import 'package:CarePay/screens/patientScreens/addressDetail.dart';
 import 'package:CarePay/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,20 +30,33 @@ class PersonalDetailController with ChangeNotifier {
 
   bool _genderError = false;
   get genderError => _genderError;
+  bool _isMarriedError = false;
+  get isMarriedError => _isMarriedError;
 
   var _genderValue = "";
   get genderValue => _genderValue;
+  var _isMarriedValue = "";
+  get isMarriedValue => _isMarriedValue;
 
   bool _isButtonEnabled = false;
   bool get isButtonEnabled => _isButtonEnabled;
+  bool _relationError = false;
+  bool get relationError => _relationError;
+  String? _relationValue;
+  String? get relationValue => _relationValue;
 
   final altMobController = TextEditingController();
+  final refMobController = TextEditingController();
   final panController = TextEditingController();
   final nameController = TextEditingController();
+  final ownerNameController = TextEditingController();
   final emailController = TextEditingController();
   final dobController = TextEditingController();
 
-  var genders = ["Male", "Female", "Other", "Prefer not to say"];
+  var genders = ["Male", "Female", "Other"];
+
+  var relations = ["Spouse", "Father", "Mother", "Brother", "Sister"];
+  var isMarriedOptions = ["Yes", "No"];
 
   void initFetchData(context) async {
     FetchLoader().fetchData(context, 'Fetching personal details');
@@ -141,6 +155,25 @@ class PersonalDetailController with ChangeNotifier {
     // print(mob.text.toString());
   }
 
+  setIsMarriedValue(value) {
+    _isMarriedValue = value.toString();
+    _isMarriedError = false;
+    notifyListeners();
+  }
+
+  setRelationError(value) {
+    _relationError = value;
+    notifyListeners();
+  }
+
+  setRelations(value) {
+    if (value.toString() != "Select Relation") {
+      _relationValue = value.toString();
+      _relationError = false;
+      notifyListeners();
+    }
+  }
+
   setGenderValue(value) {
     _genderValue = value.toString();
     _genderError = false;
@@ -224,12 +257,25 @@ class PersonalDetailController with ChangeNotifier {
     notifyListeners();
   }
 
+  setIsMarriedError(value) {
+    _isMarriedError = value;
+    notifyListeners();
+  }
+
   Future<void> handleSubmition(BuildContext context) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     var widgetMobile = await pref.getString('number');
 
     if (genderValue.toString().length < 2) {
       _genderError = true;
+      notifyListeners();
+      if (isMarriedValue.toString().length < 2) {
+        _isMarriedError = true;
+        notifyListeners();
+      }
+      return;
+    } else if (isMarriedValue.toString().length < 2) {
+      _isMarriedError = true;
       notifyListeners();
       return;
     }
@@ -262,12 +308,12 @@ class PersonalDetailController with ChangeNotifier {
 
       if (res['status'] == 200) {
         Loader().loaderClose(context);
-        // Navigator.push(
-        //   context,
-        //   PageTransition(
-        //       type: PageTransitionType.rightToLeftWithFade,
-        //       child: AddressDetailScreen()),
-        // );
+        Navigator.push(
+          context,
+          PageTransition(
+              type: PageTransitionType.rightToLeftWithFade,
+              child: AddressDetailScreen()),
+        );
       } else {
         Loader().loaderClose(context);
         Utils.toastMessage("Try Again");
@@ -276,5 +322,14 @@ class PersonalDetailController with ChangeNotifier {
       Loader().loaderClose(context);
       Utils.toastMessage("Check Internet Connection");
     }
+  }
+
+  handleTemp(context) {
+    Navigator.push(
+      context,
+      PageTransition(
+          type: PageTransitionType.rightToLeftWithFade,
+          child: AddressDetailScreen()),
+    );
   }
 }

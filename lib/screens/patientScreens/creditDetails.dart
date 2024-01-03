@@ -21,9 +21,9 @@ class _CreditDetailsState extends State<CreditDetails>
   late final AnimationController _animationController;
 
   final _formKeyTreatmentName = GlobalKey<FormState>();
+  final _formKeyPatientName = GlobalKey<FormState>();
   final _formKeyFullName = GlobalKey<FormState>();
-  final _formKeyClinicName = GlobalKey<FormState>();
-  final _formKeyPurposeOfCredit = GlobalKey<FormState>();
+
   final _formKeyCreditAmount = GlobalKey<FormState>();
 
   @override
@@ -81,8 +81,8 @@ class _CreditDetailsState extends State<CreditDetails>
                   elevation: 0,
                   centerTitle: false,
                   automaticallyImplyLeading: false,
-                  // leadingWidth: 0,
-                  titleSpacing: 0,
+                  // leadingWidth: 8,
+                  titleSpacing: 10,
                   title: Text(
                     TextConstant.loanApplicationn,
                     style: TextStyle(
@@ -122,6 +122,8 @@ class _CreditDetailsState extends State<CreditDetails>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                           Container(
+                            margin: EdgeInsets.fromLTRB(
+                                0 * fem, 10 * fem, 0 * fem, 10 * fem),
                             child: FadeSlideTransition(
                                 animation: _formElementAnimation,
                                 additionalOffset: space,
@@ -164,8 +166,7 @@ class _CreditDetailsState extends State<CreditDetails>
                                           fontSize: 14 * ffem,
                                           fontWeight: FontWeight.w400,
                                           height: 1.1725 * ffem / fem,
-                                          color:
-                                              AppColors.black.withOpacity(0.4),
+                                          color: AppColors.black,
                                         ),
                                       ),
                                     ])),
@@ -181,7 +182,7 @@ class _CreditDetailsState extends State<CreditDetails>
                                           0 * fem, 0 * fem, 0 * fem, 1.5 * fem),
                                       child: TextFormField(
                                         controller:
-                                            controller.clinicNameController,
+                                            controller.creditAmountController,
                                         onChanged: (value) {
                                           if (value.isNotEmpty) {
                                             _formKeyCreditAmount.currentState!
@@ -198,9 +199,12 @@ class _CreditDetailsState extends State<CreditDetails>
                                         ),
                                         decoration: InputDecoration(
                                           counterText: "",
-                                          contentPadding:
-                                              EdgeInsets.all(2 * fem),
-                                          fillColor: AppColors.transparent,
+                                          contentPadding: EdgeInsets.fromLTRB(
+                                              8 * fem,
+                                              0 * fem,
+                                              8 * fem,
+                                              0 * fem),
+                                          fillColor: AppColors.ECEBFF,
                                           filled: true,
                                           hintText:
                                               TextConstant.enterCreditAmount,
@@ -212,11 +216,12 @@ class _CreditDetailsState extends State<CreditDetails>
                                               height: 1.1725 * ffem / fem,
                                               color: AppColors.black54,
                                               letterSpacing: 0.5),
-                                          prefix: SizedBox(
-                                              width: 9 * fem,
-                                              height: 20 * fem,
-                                              child: Image.asset(
-                                                  'assets/images/₹.png')),
+                                          prefixIcon: Image.asset(
+                                            'assets/images/rsIcon.png',
+                                            height: 4,
+                                            fit: BoxFit.contain,
+                                            // width: 6 * fem,
+                                          ),
                                           border: OutlineInputBorder(
                                               borderRadius:
                                                   BorderRadius.circular(
@@ -269,8 +274,7 @@ class _CreditDetailsState extends State<CreditDetails>
                                           fontSize: 14 * ffem,
                                           fontWeight: FontWeight.w400,
                                           height: 1.1725 * ffem / fem,
-                                          color:
-                                              AppColors.black.withOpacity(0.4),
+                                          color: AppColors.black,
                                         ),
                                       ),
                                     ])),
@@ -303,9 +307,12 @@ class _CreditDetailsState extends State<CreditDetails>
                                         ),
                                         decoration: InputDecoration(
                                           counterText: "",
-                                          contentPadding:
-                                              EdgeInsets.all(2 * fem),
-                                          fillColor: AppColors.transparent,
+                                          contentPadding: EdgeInsets.fromLTRB(
+                                              8 * fem,
+                                              0 * fem,
+                                              8 * fem,
+                                              0 * fem),
+                                          fillColor: AppColors.ECEBFF,
                                           filled: true,
                                           hintText:
                                               TextConstant.enterTreatmentName,
@@ -369,8 +376,7 @@ class _CreditDetailsState extends State<CreditDetails>
                                           fontSize: 14 * ffem,
                                           fontWeight: FontWeight.w400,
                                           height: 1.1725 * ffem / fem,
-                                          color:
-                                              AppColors.black.withOpacity(0.4),
+                                          color: AppColors.black,
                                         ),
                                       ),
                                     ])),
@@ -403,9 +409,12 @@ class _CreditDetailsState extends State<CreditDetails>
                                         ),
                                         decoration: InputDecoration(
                                           counterText: "",
-                                          contentPadding:
-                                              EdgeInsets.all(2 * fem),
-                                          fillColor: AppColors.transparent,
+                                          contentPadding: EdgeInsets.fromLTRB(
+                                              8 * fem,
+                                              0 * fem,
+                                              8 * fem,
+                                              0 * fem),
+                                          fillColor: AppColors.ECEBFF,
                                           filled: true,
                                           hintText: TextConstant.enterFullName,
                                           hintStyle: TextStyle(
@@ -440,7 +449,7 @@ class _CreditDetailsState extends State<CreditDetails>
                           Container(
                             // group167cge (455:270)
                             margin: EdgeInsets.fromLTRB(
-                                0 * fem, 5 * fem, 0 * fem, 0 * fem),
+                                0 * fem, 5 * fem, 0 * fem, 10 * fem),
                             width: double.infinity,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12 * fem),
@@ -467,8 +476,7 @@ class _CreditDetailsState extends State<CreditDetails>
                                           fontSize: 14 * ffem,
                                           fontWeight: FontWeight.w400,
                                           height: 1.1725 * ffem / fem,
-                                          color:
-                                              AppColors.black.withOpacity(0.4),
+                                          color: AppColors.black,
                                         ),
                                       ),
                                     ])),
@@ -509,6 +517,367 @@ class _CreditDetailsState extends State<CreditDetails>
                               ],
                             ),
                           ),
+
+                          // var borrowFor = ["Myself", "Someone else"];
+                          if (controller.borrowForValue == "Someone else") ...[
+                            Container(
+                              // group167cge (455:270)
+                              margin: EdgeInsets.fromLTRB(
+                                  0 * fem, 5 * fem, 0 * fem, 0 * fem),
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12 * fem),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  FadeSlideTransition(
+                                    animation: _formElementAnimation,
+                                    // additionalOffset: fem,
+                                    additionalOffset: 0.0,
+                                    child: Container(
+                                      // emailidwU2 (455:267)
+                                      margin: EdgeInsets.fromLTRB(
+                                          0 * fem, 10 * fem, 0 * fem, 0 * fem),
+                                      child: Text.rich(
+                                          TextSpan(children: <InlineSpan>[
+                                        TextSpan(
+                                          text: TextConstant.nameOfPatient,
+                                          style: TextStyle(
+                                            // 'Work Sans',
+                                            fontFamily: "DM Sans",
+                                            letterSpacing: 0.5,
+                                            fontSize: 14 * ffem,
+                                            fontWeight: FontWeight.w400,
+                                            height: 1.1725 * ffem / fem,
+                                            color: AppColors.black,
+                                          ),
+                                        ),
+                                      ])),
+                                    ),
+                                  ),
+                                  FadeSlideTransition(
+                                    animation: _formElementAnimation,
+                                    additionalOffset: 2 * space,
+                                    child: Form(
+                                      key: _formKeyPatientName,
+                                      child: Container(
+                                        margin: EdgeInsets.fromLTRB(0 * fem,
+                                            0 * fem, 0 * fem, 1.5 * fem),
+                                        child: TextFormField(
+                                          controller:
+                                              controller.patientNameController,
+                                          onChanged: (value) {
+                                            if (value.isNotEmpty) {
+                                              _formKeyPatientName.currentState!
+                                                  .validate();
+                                            }
+                                          },
+                                          keyboardType: TextInputType.name,
+                                          // maxLength: 10,
+                                          // autofocus: true,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            height: 1,
+                                            fontFamily: 'DM Sans',
+                                          ),
+                                          decoration: InputDecoration(
+                                            counterText: "",
+                                            contentPadding: EdgeInsets.fromLTRB(
+                                                8 * fem,
+                                                0 * fem,
+                                                8 * fem,
+                                                0 * fem),
+                                            fillColor: AppColors.ECEBFF,
+                                            filled: true,
+                                            hintText:
+                                                TextConstant.enterNameOfPatient,
+                                            hintStyle: TextStyle(
+                                                // 'Work Sans',
+                                                fontFamily: "DM Sans",
+                                                fontSize: 14 * ffem,
+                                                fontWeight: FontWeight.w400,
+                                                height: 1.1725 * ffem / fem,
+                                                color: AppColors.black54,
+                                                letterSpacing: 0.5),
+                                            border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        4 * fem),
+                                                borderSide: BorderSide.none),
+                                          ),
+                                          // autovalidateMode: AutovalidateMode.onUserInteraction,
+                                          validator: (value) {
+                                            if (value!.trim().isEmpty) {
+                                              return TextConstant
+                                                  .patientNameRequired;
+                                            } else {
+                                              return null;
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              // group167cge (455:270)
+                              margin: EdgeInsets.fromLTRB(
+                                  0 * fem, 5 * fem, 0 * fem, 0 * fem),
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12 * fem),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  FadeSlideTransition(
+                                    animation: _formElementAnimation,
+                                    // additionalOffset: fem,
+                                    additionalOffset: 0.0,
+                                    child: Container(
+                                      // emailidwU2 (455:267)
+                                      margin: EdgeInsets.fromLTRB(
+                                          0 * fem, 10 * fem, 0 * fem, 0 * fem),
+                                      child: Text.rich(
+                                          TextSpan(children: <InlineSpan>[
+                                        TextSpan(
+                                          text:
+                                              TextConstant.relationWithPatient,
+                                          style: TextStyle(
+                                            // 'Work Sans',
+                                            fontFamily: "DM Sans",
+                                            letterSpacing: 0.5,
+                                            fontSize: 14 * ffem,
+                                            fontWeight: FontWeight.w400,
+                                            height: 1.1725 * ffem / fem,
+                                            color: AppColors.black,
+                                          ),
+                                        ),
+                                      ])),
+                                    ),
+                                  ),
+                                  FadeSlideTransition(
+                                    animation: _formElementAnimation,
+                                    // additionalOffset: fem,
+                                    additionalOffset: 0.0,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: AppColors.ECEBFF,
+                                          borderRadius:
+                                              BorderRadius.circular(4 * fem)),
+                                      child: ButtonTheme(
+                                          buttonColor: AppColors.ECEBFF,
+                                          alignedDropdown: true,
+                                          child: DropdownButton(
+                                            underline: SizedBox(),
+                                            dropdownColor: AppColors.ECEBFF,
+                                            icon: const Icon(
+                                                Icons.keyboard_arrow_down),
+                                            isExpanded: true,
+                                            elevation: 2,
+                                            hint: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                TextConstant.selectFromBelow,
+                                                style: TextStyle(
+                                                  color: AppColors.black
+                                                      .withOpacity(0.4),
+                                                  fontFamily: 'DM Sans',
+                                                  fontSize: 14 * fem,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ),
+                                            ),
+                                            value: controller.relationValue,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium,
+                                            borderRadius:
+                                                BorderRadius.circular(4 * fem),
+                                            items: controller.relations
+                                                .map((data) {
+                                              return DropdownMenuItem(
+                                                  value: data,
+                                                  child: Row(
+                                                    children: [
+                                                      // SizedBox(
+                                                      //   width: 10,
+                                                      // ),
+                                                      Expanded(
+                                                        child: Text(
+                                                          data,
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  'DM Sans',
+                                                              fontSize: 15),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ));
+                                            }).toList(),
+                                            onChanged: (value) {
+                                              controller.setRelations(
+                                                  value.toString());
+                                            },
+                                          )),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            if (controller.relationError) ...[
+                              FadeSlideTransition(
+                                  animation: _formElementAnimation,
+                                  // additionalOffset: fem,
+                                  additionalOffset: 0.0,
+                                  child: Container(
+                                    margin: EdgeInsets.fromLTRB(
+                                        12 * fem, 5 * fem, 0 * fem, 0 * fem),
+                                    child: Text(
+                                      TextConstant.selectRelation,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontFamily: 'DM Sans',
+                                          color: AppColors.redError,
+                                          fontSize: 12 * fem),
+                                    ),
+                                  ))
+                            ],
+                          ],
+
+                          Container(
+
+                              // group167cge (455:270)
+                              margin: EdgeInsets.fromLTRB(
+                                  0 * fem, 10 * fem, 0 * fem, 10 * fem),
+                              width: double.infinity,
+                              // decoration: BoxDecoration(
+                              //   borderRadius: BorderRadius.circular(12 * fem),
+                              // ),
+                              child: FadeSlideTransition(
+                                  animation: _formElementAnimation,
+                                  additionalOffset: space,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                padding: EdgeInsets.fromLTRB(
+                                                    0 * fem,
+                                                    0 * fem,
+                                                    0 * fem,
+                                                    0 * fem),
+                                                primary: AppColors.transparent,
+                                                onSurface:
+                                                    AppColors.transparent,
+                                                shadowColor:
+                                                    AppColors.transparent,
+                                                backgroundColor:
+                                                    AppColors.primaryPurple),
+                                            onPressed: () async {
+                                              if (_formKeyFullName
+                                                      .currentState!
+                                                      .validate() &&
+                                                  _formKeyCreditAmount
+                                                      .currentState!
+                                                      .validate() &&
+                                                  _formKeyTreatmentName
+                                                      .currentState!
+                                                      .validate()) {
+                                                if (controller.borrowForValue ==
+                                                    "Someone else") {
+                                                  if (_formKeyPatientName
+                                                          .currentState!
+                                                          .validate() &&
+                                                      (controller.relationValue !=
+                                                              null &&
+                                                          controller
+                                                                  .relationValue !=
+                                                              "")) {
+                                                    // handle submition api
+                                                    controller
+                                                        .handleSubmitCreditDetails(
+                                                            context);
+                                                  } else {
+                                                    _formKeyPatientName
+                                                        .currentState!
+                                                        .validate();
+                                                    if (controller
+                                                                .relationValue ==
+                                                            null &&
+                                                        controller
+                                                                .relationValue ==
+                                                            "") {
+                                                      controller
+                                                          .setRelationError(
+                                                              true);
+                                                    }
+                                                  }
+                                                } else {
+                                                  // handle submition api
+                                                  controller
+                                                      .handleSubmitCreditDetails(
+                                                          context);
+                                                }
+                                              } else {
+                                                _formKeyFullName.currentState!
+                                                    .validate();
+                                                _formKeyCreditAmount
+                                                    .currentState!
+                                                    .validate();
+                                                _formKeyTreatmentName
+                                                    .currentState!
+                                                    .validate();
+                                              }
+                                            },
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      0 * fem,
+                                                      15 * fem,
+                                                      0 * fem,
+                                                      15 * fem),
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      1.8,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        TextConstant.submit,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                          fontFamily: 'DM Sans',
+                                                          // 'Work Sans',
+                                                          fontSize: 14 * fem,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          height: 1.1725 *
+                                                              fem /
+                                                              fem,
+                                                          color:
+                                                              Color(0xffffffff),
+                                                          letterSpacing: 0.5,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            )),
+                                      )
+                                    ],
+                                  )))
                         ]))))));
   }
 }
