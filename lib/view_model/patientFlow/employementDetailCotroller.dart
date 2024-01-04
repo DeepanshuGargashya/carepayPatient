@@ -1,6 +1,7 @@
 import 'package:CarePay/components/loader.dart';
 import 'package:CarePay/res/color.dart';
 import 'package:CarePay/respository/patientResp/employementDetailrepository.dart';
+import 'package:CarePay/screens/patientScreens/tradeFareFlow/bankDetail.dart';
 // import 'package:CarePay/screens/patientScreens/bankDetail.dart';
 // import 'package:CarePay/screens/patientScreens/newBankDetails.dart';
 import 'package:CarePay/utils/utils.dart';
@@ -14,19 +15,24 @@ import '../../components/fetchLoader.dart';
 class EmploymentDetailController with ChangeNotifier {
   final _myRepo = EmployementDetailRepository();
 
-  final fieldTJYears = TextEditingController();
-  final fieldTJMonths = TextEditingController();
-  final fieldWEYears = TextEditingController();
-  final fieldWEMonths = TextEditingController();
+  final formKeyMonthlyIncome = GlobalKey<FormState>();
+  final formKeyMonthlyFamilyIncome = GlobalKey<FormState>();
+  final formKeyBuisnessName = GlobalKey<FormState>();
+  final formKeyCurrentCompanyName = GlobalKey<FormState>();
+  // final fieldTJYears = TextEditingController();
+  // final fieldTJMonths = TextEditingController();
+  // final fieldWEYears = TextEditingController();
+  // final fieldWEMonths = TextEditingController();
   final scrollController = ScrollController();
   final monthlyIncomeController = TextEditingController();
   final monthlyFamilyIncomeController = TextEditingController();
   final buisnessNameController = TextEditingController();
-  final currentCompanyAdd1Controller = TextEditingController();
-  final currentCompanyAdd2Controller = TextEditingController();
-  final currentCompanyPincodeController = TextEditingController();
-  final salaryDateController = TextEditingController();
-  final industryOther = TextEditingController();
+  final currentCompanyNameController = TextEditingController();
+  // final currentCompanyAdd1Controller = TextEditingController();
+  // final currentCompanyAdd2Controller = TextEditingController();
+  // final currentCompanyPincodeController = TextEditingController();
+  // final salaryDateController = TextEditingController();
+  // final industryOther = TextEditingController();
 
   var _response;
   get response => _response;
@@ -64,6 +70,8 @@ class EmploymentDetailController with ChangeNotifier {
 
   String? _industryDropdownValue;
   String? get industryDropdownValue => _industryDropdownValue;
+  bool _buisnessTypeDropdownError = false;
+  bool get buisnessTypeDropdownError => _buisnessTypeDropdownError;
 
   var industryDropDown = [
     "Ecommerce",
@@ -105,61 +113,42 @@ class EmploymentDetailController with ChangeNotifier {
   ];
   var employmentTypeDropDown = ["Salaried", "Self-employed"];
   var currentEmployerDropDown = [];
-  var buisnessTypeDropDown = [];
+  var buisnessTypeDropDown = [
+    "Public Limited Company",
+    "Private Limited Company",
+    "Limited Liability Partners",
+    "Limited Liability Company",
+    "Partnership Firm",
+    "Sole Proprietorship",
+    "One-person company"
+  ];
 
-  bool checkValidExp() {
-    var jobExp = (fieldTJMonths.text.toString() != '' &&
-                fieldTJMonths.text.toString() != null
-            ? int.parse(fieldTJMonths.text.toString())
-            : 0) +
-        12 *
-            (fieldTJYears.text.toString() != '' &&
-                    fieldTJYears.text.toString() != null
-                ? int.parse(fieldTJYears.text.toString())
-                : 0);
-    var workExp = (fieldWEMonths.text.toString() != '' &&
-                fieldWEMonths.text.toString() != null
-            ? int.parse(fieldWEMonths.text.toString())
-            : 0) +
-        12 *
-            (fieldWEYears.text.toString() != '' &&
-                    fieldWEYears.text.toString() != null
-                ? int.parse(fieldWEYears.text.toString())
-                : 0);
-    print("months exper");
-    print(jobExp);
-    print(workExp);
-    print(fieldWEMonths);
-    print(fieldWEMonths.text);
-    print(fieldWEMonths.text.toString());
-    print(fieldTJMonths.text.toString());
-
-    if (jobExp == 0 && workExp == 0) {
-      return true;
-    } else if (jobExp > workExp
-        //  ||
-        // fieldWEMonths.text.toString() == "" ||
-        // fieldTJMonths.text.toString() == ""
-        ) {
-      return true;
-    } else {
-      if ((fieldWEMonths.text.toString() != ''
-              ? int.parse(fieldWEMonths.text.toString()) > 12
-              : 0 > 12) ||
-          (fieldTJMonths.text.toString() != ''
-              ? int.parse(fieldTJMonths.text.toString()) > 12
-              : 0 > 12)) {
+  bool checkValid() {
+    if (employmentTypeDropdownValue.toString() == "Salaried") {
+      if (formKeyCurrentCompanyName.currentState!.validate()) {
         return true;
       }
-      _experienceError = false;
-      notifyListeners();
       return false;
+    } else {
+      if (formKeyBuisnessName.currentState!.validate() &&
+          _buisnessTypeDropdownValue != null &&
+          _buisnessTypeDropdownValue!.isNotEmpty) {
+        return true;
+      } else {
+        formKeyBuisnessName.currentState!.validate();
+        if (_buisnessTypeDropdownValue != null &&
+            _buisnessTypeDropdownValue!.isNotEmpty) {
+          _buisnessTypeDropdownError = true;
+          notifyListeners();
+        }
+        return false;
+      }
     }
   }
 
   bool isEmpty() {
     // setState(() {
-    if ((industryDropdownValue != null) && (employmentTypeDropDown != null)) {
+    if ((employmentTypeDropdownValue != null)) {
       _isButtonEnabled = true;
     } else {
       _isButtonEnabled = false;
@@ -204,7 +193,7 @@ class EmploymentDetailController with ChangeNotifier {
       print(picked.toString());
       var result = picked.toString().substring(0, 10).split("-");
 
-      this.salaryDateController.text = result[2].toString();
+      // this.salaryDateController.text = result[2].toString();
 
       notifyListeners();
     }
@@ -236,72 +225,42 @@ class EmploymentDetailController with ChangeNotifier {
     print("setting controller");
     // print(number.toString());
     if (response != null) {
-      if (response['employerType'] != null) {
-        _employmentTypeDropdownValue = response['employerType'] != null
-            ? response['employerType'].toString()
-            : "";
+      if (response['employmentType'] != null) {
+        _employmentTypeDropdownValue =
+            response['employmentType'] == "SELF_EMPLOYED"
+                ? "Self-employed"
+                : "Salaried";
       }
-      this.monthlyIncomeController.text = response['nettakehomesalary'] != null
-          ? response['nettakehomesalary'].toString()
+      monthlyIncomeController.text = response['monthlyInHandSalary'] != null
+          ? response['monthlyInHandSalary'].toString()
           : "";
 
-      this.salaryDateController.text =
-          response['salaryDay'] != null ? response['salaryDay'].toString() : "";
-      this.monthlyFamilyIncomeController.text =
+      // this.salaryDateController.text =
+      //     response['salaryDay'] != null ? response['salaryDay'].toString() : "";
+      monthlyFamilyIncomeController.text =
           response['monthlyFamilyIncome'] != null
               ? response['monthlyFamilyIncome'].toString()
               : "";
-      this.buisnessNameController.text = response['organizationName'] != null
-          ? response['organizationName'].toString()
+      currentCompanyNameController.text = response['currentCompanyName'] != null
+          ? response['currentCompanyName'].toString()
           : "";
-      this.currentCompanyAdd1Controller.text =
-          response['workplaceAddress1'] != null
-              ? response['workplaceAddress1'].toString()
-              : "";
-      this.currentCompanyAdd2Controller.text =
-          response['workplaceAddress2'] != null
-              ? response['workplaceAddress2'].toString()
-              : "";
-      this.currentCompanyPincodeController.text =
-          response['workplacePincode'] != null
-              ? response['workplacePincode'].toString()
-              : "";
-
-      if (response['industry'] != null) {
-        if (!industryDropDown.contains(response['industry'].toString())) {
-          industryDropDown = [
-            ...industryDropDown,
-            response['industry'].toString()
-          ];
-          _industryDropdownValue = response['industry'] != null
-              ? response['industry'].toString()
-              : "";
-          notifyListeners();
-        } else {
-          _industryDropdownValue = response['industry'] != null
-              ? response['industry'].toString()
-              : "";
-          notifyListeners();
-        }
-        _industryDropdownValue =
-            response['industry'] != null ? response['industry'].toString() : "";
+      if (response['typeOfBusiness'] != null) {
+        _buisnessTypeDropdownValue = response['typeOfBusiness'].toString();
       }
-      this.fieldWEMonths.text = response['totalJobExpInMonth'] != null
-          ? response['totalJobExpInMonth'].toString()
+      buisnessNameController.text = response['nameOfBusiness'] != null
+          ? response['nameOfBusiness'].toString()
           : "";
-      this.fieldWEYears.text = response['totalJobExpInYears'] != null
-          ? response['totalJobExpInYears'].toString()
-          : "";
-      this.fieldTJMonths.text = response['currentJobExpInMonth'] != null
-          ? response['currentJobExpInMonth'].toString()
-          : "";
-      this.fieldTJYears.text = response['currentJobExpInYears'] != null
-          ? response['currentJobExpInYears'].toString()
-          : "";
+      notifyListeners();
     }
   }
 
   // set dropdown values
+
+  setBuisnessTypeDropdown(value) {
+    _buisnessTypeDropdownValue = value.toString();
+    _buisnessTypeDropdownError = false;
+    notifyListeners();
+  }
 
   setEmployementTypeDropdownValue(value) {
     _employmentTypeDropdownValue = value.toString();
@@ -328,127 +287,95 @@ class EmploymentDetailController with ChangeNotifier {
       final SharedPreferences pref = await SharedPreferences.getInstance();
       var userId = pref.getString('userId');
       // Loader().fetchData(context);
-      if (isChecked) {
-        var check = await checkValidExp();
 
-        if (check) {
-          _experienceError = true;
+      try {
+        // Loader().fetchData(context);
+        FetchLoader().fetchData(context, 'Submitting...');
+        print('going to create payload');
+        var payload = {
+          "userId": userId.toString(),
+          // "employmentType": "SALARIED" || "SELF_EMPLOYED",
+          "employmentType": employmentTypeDropdownValue.toString() == "Salaried"
+              ? "SALARIED"
+              : "SELF_EMPLOYED",
+          "netTakeHomeSalary": monthlyIncomeController.text.toString(),
+          "organizationName":
+              employmentTypeDropdownValue.toString() == "Salaried"
+                  ? currentCompanyNameController.text.toString()
+                  : "",
+          "nameOfBusiness": employmentTypeDropdownValue.toString() != "Salaried"
+              ? buisnessNameController.text.toString()
+              : "",
+          "typeOfBusiness": employmentTypeDropdownValue.toString() != "Salaried"
+              ? buisnessTypeDropdownValue.toString()
+              : "",
+          "monthlyFamilyIncome": monthlyFamilyIncomeController.text.toString(),
+          "formStatus": ""
+        };
 
-          notifyListeners();
-          // Loader().loaderClose(context);
-          return;
+        if (response != "" && response != null) {
+          print('response not null');
+          payload = {...response, ...payload};
         }
-        try {
-          // Loader().fetchData(context);
-          FetchLoader().fetchData(context, 'Submitting...');
-          print('going to create payload');
-          var payload;
-          if (response != "" && response != null) {
-            print('response not null');
-            payload = {
-              ...response,
-              "userId": userId.toString(),
-              "netTakeHomeSalary":
-                  int.parse(monthlyIncomeController.text.toString()),
-              "monthlyFamilyIncome":
-                  monthlyFamilyIncomeController.text.toString().length > 2
-                      ? int.parse(monthlyFamilyIncomeController.text.toString())
-                      : "",
-              "employmentType": employmentTypeDropdownValue.toString(),
-              "organizationName": buisnessNameController.text.toString(),
-              "workplaceAddress1": currentCompanyAdd1Controller.text.toString(),
-              "workplaceAddress2": currentCompanyAdd2Controller.text.toString(),
-              "workplacePincode":
-                  int.parse(currentCompanyPincodeController.text.toString()),
-              "industry": industryDropdownValue.toString() == "Other"
-                  ? industryOther.text.toString()
-                  : industryDropdownValue.toString(),
-              "currentJobExpInMonth": fieldTJMonths.text.toString() != ''
-                  ? int.parse(fieldTJMonths.text.toString())
-                  : 0,
-              "currentJobExpInYears": fieldTJYears.text.toString() != ''
-                  ? int.parse(fieldTJYears.text.toString())
-                  : 0,
-              "totalJobExpInMonth": fieldWEMonths.text.toString() != ''
-                  ? int.parse(fieldWEMonths.text.toString())
-                  : 0,
-              "totalJobExpInYears": fieldWEYears.text.toString() != ''
-                  ? int.parse(fieldWEYears.text.toString())
-                  : 0,
-              "salaryDay": salaryDateController.text.toString(),
-              "formStatus": ""
-            };
-          } else {
-            print('response  null');
-            print('response  null');
-            payload = {
-              "userId": userId.toString(),
-              "netTakeHomeSalary":
-                  int.parse(monthlyIncomeController.text.toString()),
-              "monthlyFamilyIncome":
-                  monthlyFamilyIncomeController.text.toString().length > 2
-                      ? int.parse(monthlyFamilyIncomeController.text.toString())
-                      : "",
-              "employmentType": employmentTypeDropdownValue.toString(),
-              "organizationName": buisnessNameController.text.toString(),
-              "workplaceAddress1": currentCompanyAdd1Controller.text.toString(),
-              "workplaceAddress2": currentCompanyAdd2Controller.text.toString(),
-              "workplacePincode":
-                  int.parse(currentCompanyPincodeController.text.toString()),
-              "industry": industryDropdownValue.toString() == "Other"
-                  ? industryOther.text.toString()
-                  : industryDropdownValue.toString(),
-              "currentJobExpInMonth": fieldTJMonths.text.toString() != ''
-                  ? int.parse(fieldTJMonths.text.toString())
-                  : 0,
-              "currentJobExpInYears": fieldTJYears.text.toString() != ''
-                  ? int.parse(fieldTJYears.text.toString())
-                  : 0,
-              "totalJobExpInMonth": fieldWEMonths.text.toString() != ''
-                  ? int.parse(fieldWEMonths.text.toString())
-                  : 0,
-              "totalJobExpInYears": fieldWEYears.text.toString() != ''
-                  ? int.parse(fieldWEYears.text.toString())
-                  : 0,
-              "salaryDay": salaryDateController.text.toString(),
-              "formStatus": ""
-            };
-          }
 
-          print(payload);
-          var res = await _myRepo.handleSubmitionApi(payload);
+        print(payload);
+        var res = await _myRepo.handleSubmitionApi(payload);
 
-          print(res);
-          // print(res['msg'].toString());
-          print(res['status']);
-          if (res['status'] == 200) {
-            Loader().loaderClose(context);
-
-            // Navigator.push(
-            //   context,
-            //   PageTransition(
-            //       type: PageTransitionType.rightToLeftWithFade,
-            //       child: NewBankDetails()),
-            //   // BankDetailScreen()),
-            // );
-          } else {
-            Loader().loaderClose(context);
-            Utils.toastMessage("Try Again");
-          }
-        } catch (e) {
-          print(e);
+        print(res);
+        // print(res['msg'].toString());
+        print(res['status']);
+        if (res['status'] == 200) {
           Loader().loaderClose(context);
-          Utils.toastMessage("Check Internet Connection");
-        }
-      } else {
-        _isCheckedError = true;
 
-        Utils.toastMessage("Accept the declaration message");
-        notifyListeners();
+          Navigator.push(
+              context,
+              PageTransition(
+                  type: PageTransitionType.rightToLeftWithFade,
+                  child: BankDetailScreen()));
+          // BankDetailScreen()),
+          // );
+        } else {
+          Loader().loaderClose(context);
+          Utils.toastMessage("Try Again");
+        }
+      } catch (e) {
+        print(e);
+        Loader().loaderClose(context);
+        Utils.toastMessage("Check Internet Connection");
       }
     } catch (e) {
       print("e");
       print(e);
     }
+  }
+
+  handleTemp(context) {
+    var payload = {
+      "userId": userId.toString(),
+      // "employmentType": "SALARIED" || "SELF_EMPLOYED",
+      "employmentType": employmentTypeDropdownValue.toString() == "Salaried"
+          ? "SALARIED"
+          : "SELF_EMPLOYED",
+      "netTakeHomeSalary": monthlyIncomeController.text.toString(),
+      "organizationName": employmentTypeDropdownValue.toString() == "Salaried"
+          ? currentCompanyNameController.text.toString()
+          : "",
+      "nameOfBusiness": employmentTypeDropdownValue.toString() != "Salaried"
+          ? buisnessNameController.text.toString()
+          : "",
+      "typeOfBusiness": employmentTypeDropdownValue.toString() != "Salaried"
+          ? buisnessTypeDropdownValue.toString()
+          : "",
+      "monthlyFamilyIncome": monthlyFamilyIncomeController.text.toString(),
+      "formStatus": ""
+    };
+    print(payload);
+    // Navigator.push(
+    //   context,
+    //   PageTransition(
+    //       type: PageTransitionType.rightToLeftWithFade,
+    //       child: BankDetailScreen()),
+    //   // BankDetailScreen()),
+    // );
   }
 }

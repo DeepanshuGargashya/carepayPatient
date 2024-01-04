@@ -22,14 +22,11 @@ class EmploymentDetailState extends State<EmploymentDetailScreen>
   late final Animation<double> _formElementAnimation;
   late final AnimationController _animationController;
 
-  final _formKeyMonthlyIncome = GlobalKey<FormState>();
-  final _formKeyMonthlyFamilyIncome = GlobalKey<FormState>();
-  final _formKeyBuisnessName = GlobalKey<FormState>();
-  final _formKeyCurrentCompanyAdd1 = GlobalKey<FormState>();
-  final _formKeyCurrentCompanyAdd2 = GlobalKey<FormState>();
-  final _formKeyCurrentCompanyPincode = GlobalKey<FormState>();
-  final _formKeyIndustry = GlobalKey<FormState>();
-  final _formKeySalaryDate = GlobalKey<FormState>();
+  // final controller.formKeyCurrentCompanyAdd1 = GlobalKey<FormState>();
+  // final controller.formKeyCurrentCompanyAdd2 = GlobalKey<FormState>();
+  // final controller.formKeyCurrentCompanyPincode = GlobalKey<FormState>();
+  // final controller.formKeyIndustry = GlobalKey<FormState>();
+  // final controller.formKeySalaryDate = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -322,7 +319,7 @@ class EmploymentDetailState extends State<EmploymentDetailScreen>
                                 child:
                                     Text.rich(TextSpan(children: <InlineSpan>[
                                   TextSpan(
-                                    text: TextConstant.selectCurrentEmployer,
+                                    text: TextConstant.currentCompany,
                                     style: TextStyle(
                                       // 'Work Sans',
                                       fontFamily: "DM Sans",
@@ -338,75 +335,61 @@ class EmploymentDetailState extends State<EmploymentDetailScreen>
                             ),
                             FadeSlideTransition(
                               animation: _formElementAnimation,
-                              // additionalOffset: fem,
-                              additionalOffset: 0.0,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: AppColors.ECEBFF,
-                                    borderRadius:
-                                        BorderRadius.circular(4 * fem)),
-                                child: ButtonTheme(
-                                    buttonColor: AppColors.ECEBFF,
-                                    alignedDropdown: true,
-                                    child: DropdownButton(
-                                      underline: SizedBox(),
-                                      dropdownColor: AppColors.ECEBFF,
-                                      icon:
-                                          const Icon(Icons.keyboard_arrow_down),
-                                      isExpanded: true,
-                                      elevation: 2,
-                                      hint: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child:
-                                            Text(TextConstant.selectFromBelow),
-                                      ),
-                                      value: controller
-                                          .currentEmployerDropdownValue,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium,
-                                      borderRadius:
-                                          BorderRadius.circular(4 * fem),
-                                      items: controller.currentEmployerDropDown
-                                          .map((data) {
-                                        return DropdownMenuItem(
-                                            value: data,
-                                            child: Row(
-                                              // mainAxisAlignment:
-                                              // bankDropDownTagImageItems[
-                                              // '${items}']
-                                              //     .toString()
-                                              //     .isEmpty
-                                              //     ? MainAxisAlignment.center
-                                              //     : MainAxisAlignment.start,
-                                              children: [
-                                                // if (data.toString().isNotEmpty) ...[
-                                                //   SizedBox(
-                                                //     width: 30,
-                                                //     child: Image.asset(data.productImage),
-                                                //   )
-                                                // ],
-                                                // SizedBox(
-                                                //   width: 10,
-                                                // ),
-                                                Expanded(
-                                                  child: Text(
-                                                    data,
-                                                    style: TextStyle(
-                                                        fontFamily: 'DM Sans',
-                                                        fontSize: 15),
-                                                  ),
-                                                ),
-                                              ],
-                                            ));
-                                      }).toList(),
-                                      onChanged: (value) {
-                                        // controller
-                                        //     .setEmployementTypeDropdownValue(
-                                        //         value.toString());
-                                        // print(staffDropdownvalue);
-                                      },
-                                    )),
+                              additionalOffset: 2 * space,
+                              child: Form(
+                                key: controller.formKeyCurrentCompanyName,
+                                child: Container(
+                                  margin: EdgeInsets.fromLTRB(
+                                      0 * fem, 0 * fem, 0 * fem, 1.5 * fem),
+                                  child: TextFormField(
+                                    controller:
+                                        controller.currentCompanyNameController,
+                                    onChanged: (value) {
+                                      if (value.isNotEmpty) {
+                                        controller.formKeyCurrentCompanyName
+                                            .currentState!
+                                            .validate();
+                                      }
+                                    },
+                                    // maxLength: 10,
+                                    // autofocus: true,
+                                    style: const TextStyle(
+                                        fontSize: 16, height: 1.5),
+                                    decoration: InputDecoration(
+                                      counterText: "",
+                                      contentPadding: const EdgeInsets.all(15),
+                                      fillColor: AppColors.ECEBFF,
+                                      filled: true,
+                                      hintText: TextConstant.enterCurrent,
+                                      hintStyle: TextStyle(
+                                          // 'Work Sans',
+                                          fontFamily: "DM Sans",
+                                          fontSize: 14 * ffem,
+                                          fontWeight: FontWeight.w400,
+                                          height: 1.1725 * ffem / fem,
+                                          color: AppColors.black54,
+                                          letterSpacing: 0.5),
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4 * fem),
+                                          borderSide: BorderSide.none),
+                                    ),
+                                    // autovalidateMode: AutovalidateMode.onUserInteraction,
+                                    validator: (value) {
+                                      if (value!.trim().isEmpty) {
+                                        return TextConstant
+                                            .enterCurrentRequired;
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                    // onChanged: (value){
+                                    //   setState(() {
+                                    //     otpSentStatus = false;
+                                    //   });
+                                    // },
+                                  ),
+                                ),
                               ),
                             ),
                           ],
@@ -521,9 +504,9 @@ class EmploymentDetailState extends State<EmploymentDetailScreen>
                                                   ));
                                             }).toList(),
                                             onChanged: (value) {
-                                              // controller
-                                              //     .setEmployementTypeDropdownValue(
-                                              //         value.toString());
+                                              controller
+                                                  .setBuisnessTypeDropdown(
+                                                      value.toString());
                                               // print(staffDropdownvalue);
                                             },
                                           )),
@@ -572,7 +555,7 @@ class EmploymentDetailState extends State<EmploymentDetailScreen>
                                     animation: _formElementAnimation,
                                     additionalOffset: 2 * space,
                                     child: Form(
-                                      key: _formKeyBuisnessName,
+                                      key: controller.formKeyBuisnessName,
                                       child: Container(
                                         margin: EdgeInsets.fromLTRB(0 * fem,
                                             0 * fem, 0 * fem, 1.5 * fem),
@@ -582,9 +565,10 @@ class EmploymentDetailState extends State<EmploymentDetailScreen>
                                               controller.buisnessNameController,
                                           onChanged: (value) {
                                             if (value.length > 1) {
-                                              _formKeyBuisnessName.currentState!
+                                              controller.formKeyBuisnessName
+                                                  .currentState!
                                                   .validate();
-                                              // // _formKeyPan.currentState!.validate();
+                                              // // controller.formKeyPan.currentState!.validate();
                                             }
                                           },
                                           // maxLength: 10,
@@ -674,7 +658,7 @@ class EmploymentDetailState extends State<EmploymentDetailScreen>
                             animation: _formElementAnimation,
                             additionalOffset: 2 * space,
                             child: Form(
-                              key: _formKeyMonthlyIncome,
+                              key: controller.formKeyMonthlyIncome,
                               child: Container(
                                 margin: EdgeInsets.fromLTRB(
                                     0 * fem, 0 * fem, 0 * fem, 1.5 * fem),
@@ -684,7 +668,8 @@ class EmploymentDetailState extends State<EmploymentDetailScreen>
                                       controller.monthlyIncomeController,
                                   onChanged: (value) {
                                     if (value.length > 0) {
-                                      _formKeyMonthlyIncome.currentState!
+                                      controller
+                                          .formKeyMonthlyIncome.currentState!
                                           .validate();
                                     }
                                   },
@@ -772,7 +757,7 @@ class EmploymentDetailState extends State<EmploymentDetailScreen>
                             animation: _formElementAnimation,
                             additionalOffset: 2 * space,
                             child: Form(
-                              key: _formKeyMonthlyFamilyIncome,
+                              key: controller.formKeyMonthlyFamilyIncome,
                               child: Container(
                                 margin: EdgeInsets.fromLTRB(
                                     0 * fem, 0 * fem, 0 * fem, 1.5 * fem),
@@ -782,7 +767,7 @@ class EmploymentDetailState extends State<EmploymentDetailScreen>
                                       controller.monthlyFamilyIncomeController,
                                   // onChanged: (value) {
                                   //   // if (value.length > 8) {
-                                  //   //   _formKeyPan.currentState!.validate();
+                                  //   //   controller.formKeyPan.currentState!.validate();
                                   //   // }
                                   // },
                                   // maxLength: 10,
@@ -858,7 +843,27 @@ class EmploymentDetailState extends State<EmploymentDetailScreen>
                                             : AppColors.primaryPurple
                                                 .withOpacity(0.4),
                                       ),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        if (controller
+                                                .formKeyMonthlyFamilyIncome
+                                                .currentState!
+                                                .validate() &&
+                                            controller.formKeyMonthlyIncome
+                                                .currentState!
+                                                .validate() &&
+                                            controller.checkValid()) {
+                                          // controller.handleTemp(context);
+                                          controller.handleSubmition(context);
+                                        } else {
+                                          controller.formKeyMonthlyFamilyIncome
+                                              .currentState!
+                                              .validate();
+                                          controller.formKeyMonthlyIncome
+                                              .currentState!
+                                              .validate();
+                                          controller.checkValid();
+                                        }
+                                      },
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
@@ -900,67 +905,6 @@ class EmploymentDetailState extends State<EmploymentDetailScreen>
                               ],
                             )))
                   ]))),
-        ),
-      ),
-    );
-  }
-
-  Widget _textFieldOTP(TextEditingController fieldOne, {bool? first, last}) {
-    //  WidgetsBinding.instance.addPostFrameCallback((_) {
-    var controller = Provider.of<EmploymentDetailController>(context);
-
-    double baseWidth = 360;
-    double fem = MediaQuery.of(context).size.width / baseWidth;
-    double ffem = fem * 0.97;
-    return Container(
-      width: 54 * fem,
-      height: 48 * fem,
-      decoration: BoxDecoration(
-        color: AppColors.ECEBFF,
-        // boxShadow: [
-        //   BoxShadow(
-        //     color: Colors.grey.shade300.withOpacity(0.4),
-        //     spreadRadius: 5,
-        //     blurRadius: 10,
-        //     offset: Offset(0, 3), // changes position of shadow
-        //   ),
-        // ],
-        borderRadius: BorderRadius.circular(4 * fem),
-        border: Border.all(color: AppColors.F1F1F1),
-      ),
-      child: Center(
-        child: TextField(
-          autofocus: false,
-          controller: fieldOne,
-
-          // focusNode: fieldOne == _fieldOne ? otpFirstFieldFocus :null,
-          onChanged: (value) {
-            if (value.length == 2 && last == false) {
-              FocusScope.of(context).nextFocus();
-            }
-            if (value.length == 0 && first == false) {
-              FocusScope.of(context).previousFocus();
-            }
-            controller.checkValidExp();
-          },
-          showCursor: true,
-          readOnly: false,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              fontSize: 18, fontWeight: FontWeight.w300, fontFamily: "DM Sans"),
-          keyboardType: TextInputType.number,
-          maxLength: 2,
-
-          decoration: InputDecoration(
-            hintText: "-",
-            hintStyle: TextStyle(
-                fontFamily: 'DM Sans',
-                fontSize: 16 * ffem,
-                color: AppColors.ff626),
-            counter: Offstage(),
-            focusedBorder: InputBorder.none,
-            enabledBorder: InputBorder.none,
-          ),
         ),
       ),
     );

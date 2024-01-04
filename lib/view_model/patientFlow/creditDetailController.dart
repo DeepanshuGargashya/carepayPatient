@@ -235,35 +235,59 @@ class CreditDetailController with ChangeNotifier {
   }
 
   handleSubmitCreditDetails(context) async {
-    final SharedPreferences pref = await SharedPreferences.getInstance();
-    var userId = pref.getString('userId').toString();
+    Loader().fetchData(context);
+    try {
+      final SharedPreferences pref = await SharedPreferences.getInstance();
+      var userId = pref.getString('userId').toString();
 
-    var doctorId = pref.getString('doctorId');
-    var doctorName = pref.getString('doctorName');
+      var doctorId = pref.getString('doctorId');
+      var doctorName = pref.getString('doctorName');
 
-    var payload = {
-      "userId": userId.toString(),
-      "doctorName": doctorName.toString(),
-      "doctorId": doctorId.toString(),
-      "loanReason": treatmentNameController.text.toString(),
-      "loanAmount": creditAmountController.text.toString(),
-      "formStatus": ""
-    };
-    if (borrowForValue.toString() == "Someone else") {
-      print("inside if cond");
-      payload = {
-        ...payload,
-        "patientName": patientNameController.text.toString(),
-        "relationshipWithPatient": relationValue.toString()
+      var payload = {
+        "userId": userId.toString(),
+        "doctorName": doctorName.toString(),
+        "doctorId": doctorId.toString(),
+        "loanReason": treatmentNameController.text.toString(),
+        "loanAmount": creditAmountController.text.toString(),
+        "formStatus": ""
       };
-      notifyListeners();
+      if (borrowForValue.toString() == "Someone else") {
+        print("inside if cond");
+        payload = {
+          ...payload,
+          "patientName": patientNameController.text.toString(),
+          "relationshipWithPatient": relationValue.toString()
+        };
+        notifyListeners();
+      }
+
+      print(payload);
+      var res = await _myRepo.handleSubmitionApi(payload);
+      print(res);
+      if (res['status'] == 200) {
+        print('response status is 200');
+        Loader().loaderClose(context);
+        Navigator.push(
+            context,
+            PageTransition(
+                type: PageTransitionType.rightToLeftWithFade,
+                child: PersonalDetailScreen()));
+      } else {
+        print('response status is ${res['status'].toString()}');
+        Utils.toastMessage(res['data'].toString());
+        Loader().loaderClose(context);
+      }
+    } catch (e) {
+      print('response is break due to ');
+      print(e);
+      Utils.toastMessage("Check Internet Connection");
+      Loader().loaderClose(context);
     }
-    print(payload);
-    Navigator.push(
-      context,
-      PageTransition(
-          type: PageTransitionType.rightToLeftWithFade,
-          child: PersonalDetailScreen()),
-    );
+    // Navigator.push(
+    //   context,
+    //   PageTransition(
+    //       type: PageTransitionType.rightToLeftWithFade,
+    //       child: PersonalDetailScreen()),
+    // );
   }
 }

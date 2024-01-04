@@ -34,6 +34,7 @@ import 'package:CarePay/view_model/patientFlow/creditAgreementController.dart';
 import 'package:CarePay/view_model/patientFlow/creditDetailController.dart';
 import 'package:CarePay/view_model/patientFlow/dashboardController.dart';
 import 'package:CarePay/view_model/patientFlow/eMandateController.dart';
+import 'package:CarePay/view_model/patientFlow/emiPlansController.dart';
 import 'package:CarePay/view_model/patientFlow/employementDetailCotroller.dart';
 // import 'package:CarePay/view_model/patientFlow/kycVerificationController.dart';
 import 'package:CarePay/view_model/patientFlow/makePaymentController.dart';
@@ -87,6 +88,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ConfirmationController()),
         ChangeNotifierProvider(create: (_) => BarCodeScannerController()),
         ChangeNotifierProvider(create: (_) => ShareDoctorDetailsController()),
+        ChangeNotifierProvider(create: (_) => EmiPlansController()),
 
         // Doctor ==================>
         ChangeNotifierProvider(

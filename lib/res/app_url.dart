@@ -20,7 +20,7 @@ class AppUrl {
   static var getAddressDetail =
       "${baseUrl}/userDetails/getUserAddressByUserId?userId=";
   static var getEmployementDetails =
-      "${baseUrl}/userDetails/getUserEmploymentDetailsByUserId?userId=";
+      "${baseUrl}/userDetails/getUserEmploymentByUserId?userId=";
   static var getBankDetails =
       "${baseUrl}/userDetails/getAccountInfoByUserId?userId=";
   static var getBankStatement = "${baseUrl}/getDocumentsByUserId?userId=";

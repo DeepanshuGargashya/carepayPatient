@@ -14,10 +14,10 @@ class AddressDetailController with ChangeNotifier {
   final _myRepo = AddressDetailRepository();
   final _myCibilRepo = CibilDataDecentro();
 
-  final lineController = TextEditingController();
+  // final lineController = TextEditingController();
   final addressController = TextEditingController();
-  final localityController = TextEditingController();
-  final landmarkController = TextEditingController();
+  // final localityController = TextEditingController();
+  // final landmarkController = TextEditingController();
   final pincodeController = TextEditingController();
   final cityController = TextEditingController();
   // final stateController = TextEditingController();
@@ -80,9 +80,11 @@ class AddressDetailController with ChangeNotifier {
     FetchLoader().fetchData(context, 'Fetching address details');
     _cibilVisibility = false;
     _context = context;
+    notifyListeners();
     print('initS');
     final SharedPreferences pref = await SharedPreferences.getInstance();
     _userId = pref.getString('userId').toString();
+    notifyListeners();
     print(userId.toString());
     var res = await _myRepo.getAddressDetail(userId.toString());
     _response = res['data'];
@@ -124,13 +126,12 @@ class AddressDetailController with ChangeNotifier {
       }
 
       allAddressesDropDown = tempSet;
-      if (tempSet != null && tempSet.length != null && tempSet.length != 0) {
+      if (tempSet.isNotEmpty) {
         _allAddressesDropdownValue = tempSet[0];
-        this.lineController.text = tempSet[0];
-        this.pincodeController.text =
-            response['addressInfo']?[0]?['postal'] != null
-                ? response['addressInfo'][0]['postal'].toString()
-                : "";
+        addressController.text = tempSet[0];
+        pincodeController.text = response['addressInfo']?[0]?['postal'] != null
+            ? response['addressInfo'][0]['postal'].toString()
+            : "";
         notifyListeners();
         if (response['addressInfo']?[0]?['postal'] != null) {
           await fetchPinCodeDetail(context);
@@ -154,16 +155,16 @@ class AddressDetailController with ChangeNotifier {
             ? response['addressType'].toString()
             : "";
       }
-      this.lineController.text =
+      addressController.text =
           response['address'] != null ? response['address'].toString() : "";
 
-      this.localityController.text =
-          response['locality'] != null ? response['locality'].toString() : "";
-      this.landmarkController.text =
-          response['landmark'] != null ? response['landmark'].toString() : "";
-      this.pincodeController.text =
+      // this.localityController.text =
+      //     response['locality'] != null ? response['locality'].toString() : "";
+      // this.landmarkController.text =
+      //     response['landmark'] != null ? response['landmark'].toString() : "";
+      pincodeController.text =
           response['pincode'] != null ? response['pincode'].toString() : "";
-      this.cityController.text =
+      cityController.text =
           response['city'] != null ? response['city'].toString() : "";
       if (response['state'] != null) {
         stateDropDown = ["Select state", response['state'].toString()];
@@ -180,8 +181,8 @@ class AddressDetailController with ChangeNotifier {
 
     for (var item in cibilResponse['addressInfo']) {
       if (item['address'].toString() == value.toString()) {
-        this.lineController.text = item['address'].toString();
-        this.pincodeController.text =
+        addressController.text = item['address'].toString();
+        pincodeController.text =
             item['postal'] != null ? item['postal'].toString() : "";
         notifyListeners();
         if (item['postal'] != null) {
@@ -308,32 +309,18 @@ class AddressDetailController with ChangeNotifier {
     try {
       print('hii');
       print(response);
-      var payload;
+      var payload = {
+        "userId": userId.toString(),
+        "addressType": residenceDropdownValue.toString(),
+        "address": addressController.text.toString(),
+        "city": cityController.text.toString(),
+        "state": stateDropdownValue.toString(),
+        "pincode": pincodeController.text.toString(),
+        "formStatus": "",
+      };
+
       if (response != "" && response != null) {
-        payload = {
-          ...response,
-          "userId": userId.toString(),
-          "addressType": residenceDropdownValue.toString(),
-          "address": lineController.text.toString(),
-          "locality": localityController.text.toString(),
-          "landmark": landmarkController.text.toString(),
-          "city": cityController.text.toString(),
-          "state": stateDropdownValue.toString(),
-          "pincode": pincodeController.text.toString(),
-          "formStatus": ""
-        };
-      } else {
-        payload = {
-          "userId": userId.toString(),
-          "addressType": residenceDropdownValue.toString(),
-          "address": lineController.text.toString(),
-          "locality": localityController.text.toString(),
-          "landmark": landmarkController.text.toString(),
-          "city": cityController.text.toString(),
-          "state": stateDropdownValue.toString(),
-          "pincode": pincodeController.text.toString(),
-          "formStatus": ""
-        };
+        payload = {...response, ...payload};
       }
       var res = await _myRepo.handleSubmitionApi(payload);
 

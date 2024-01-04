@@ -128,7 +128,7 @@ class PersonalDetailState extends State<PersonalDetailScreen>
                 child: Container(
                   // padding: EdgeInsets.only(top: 15),
                   margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                  child: new LinearPercentIndicator(
+                  child: LinearPercentIndicator(
                     barRadius: Radius.circular(10 * fem),
                     backgroundColor: AppColors.tertiaryOrange,
                     width: MediaQuery.of(context).size.width,
@@ -1278,8 +1278,8 @@ class PersonalDetailState extends State<PersonalDetailScreen>
                                                   .validate() &&
                                               _formKeyDob.currentState!
                                                   .validate()) {
-                                            controller.handleTemp(context);
-                                            // controller.handleSubmition(context);
+                                            // controller.handleTemp(context);
+                                            controller.handleSubmition(context);
                                           } else {
                                             _formKeyPan.currentState!
                                                 .validate();

@@ -48,7 +48,7 @@ class PersonalDetailController with ChangeNotifier {
   final altMobController = TextEditingController();
   final refMobController = TextEditingController();
   final panController = TextEditingController();
-  final nameController = TextEditingController();
+  // final nameController = TextEditingController();
   final ownerNameController = TextEditingController();
   final emailController = TextEditingController();
   final dobController = TextEditingController();
@@ -107,10 +107,10 @@ class PersonalDetailController with ChangeNotifier {
           response['identityInfo']?['panid']?[0]?['idNumber'] != null
               ? response['identityInfo']['panid'][0]['idNumber'].toString()
               : "";
-      this.nameController.text =
-          response['personalInfo']?['name']?['fullName'] != null
-              ? response['personalInfo']['name']['fullName'].toString()
-              : "";
+      // this.nameController.text =
+      //     response['personalInfo']?['name']?['fullName'] != null
+      //         ? response['personalInfo']['name']['fullName'].toString()
+      //         : "";
       _genderValue = response['personalInfo']?['gender'] != null
           ? response['personalInfo']['gender'].toString()
           : "";
@@ -140,13 +140,27 @@ class PersonalDetailController with ChangeNotifier {
       print(response['mobileNumber']);
       this.panController.text =
           response['panNo'] != null ? response['panNo'].toString() : "";
-      this.nameController.text =
-          response['firstName'] != null ? response['firstName'].toString() : "";
+      // this.nameController.text =
+      //     response['firstName'] != null ? response['firstName'].toString() : "";
       _genderValue =
           response['gender'] != null ? response['gender'].toString() : "";
-      this.emailController.text =
+      emailController.text =
           response['emailId'] != null ? response['emailId'].toString() : "";
-      this.dobController.text = response['dateOfBirth'] != null
+      refMobController.text = response['referenceNumber'] != null
+          ? response['referenceNumber'].toString()
+          : "";
+      ownerNameController.text = response['referenceName'] != null
+          ? response['referenceName'].toString()
+          : "";
+      _relationValue = response['referenceRelation'] != null
+          ? response['referenceRelation'].toString()
+          : "";
+      _isMarriedValue = response['maritalStatus'] != null
+          ? response['maritalStatus'].toString()
+          : "";
+
+      notifyListeners();
+      dobController.text = response['dateOfBirth'] != null
           ? response['dateOfBirth'].toString()
           : "";
     } else {
@@ -264,7 +278,7 @@ class PersonalDetailController with ChangeNotifier {
 
   Future<void> handleSubmition(BuildContext context) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
-    var widgetMobile = await pref.getString('number');
+    var widgetMobile = pref.getString('number');
 
     if (genderValue.toString().length < 2) {
       _genderError = true;
@@ -273,35 +287,44 @@ class PersonalDetailController with ChangeNotifier {
         _isMarriedError = true;
         notifyListeners();
       }
+      if (relationValue == null || relationValue.toString().isEmpty) {
+        _relationError = true;
+        notifyListeners();
+      }
       return;
     } else if (isMarriedValue.toString().length < 2) {
       _isMarriedError = true;
+      notifyListeners();
+      if (relationValue == null || relationValue.toString().isEmpty) {
+        _relationError = true;
+        notifyListeners();
+      }
+      return;
+    } else if (relationValue == null || relationValue.toString().isEmpty) {
+      _relationError = true;
       notifyListeners();
       return;
     }
     FetchLoader().fetchData(context, 'Submitting...');
     try {
-      var payload;
+      var payload = {
+        "userId": userId.toString(),
+        "panCard": panController.text.toString(),
+        "firstName": "",
+        "gender": genderValue.toString(),
+        "emailId": emailController.text.toString(),
+        "dateOfBirth": dobController.text.toString(),
+        "mobileNumber": widgetMobile.toString(),
+        "panCardName": null,
+        "maritalStatus": isMarriedValue ?? "",
+        "alternateNumber": altMobController.text.toString(),
+        "referenceName": ownerNameController.text.toString(),
+        "referenceNumber": refMobController.text.toString(),
+        "referenceRelation": relationValue.toString(),
+        "formStatus": ""
+      };
       if (response != null) {
-        payload = {
-          ...response,
-          "panCard": panController.text.toString(),
-          "firstName": nameController.text.toString(),
-          "gender": genderValue.toString(),
-          "emailId": emailController.text.toString(),
-          "dateOfBirth": dobController.text.toString(),
-          "mobileNumber": widgetMobile.toString()
-        };
-      } else {
-        payload = {
-          "userId": userId.toString(),
-          "panCard": panController.text.toString(),
-          "firstName": nameController.text.toString(),
-          "gender": genderValue.toString(),
-          "emailId": emailController.text.toString(),
-          "dateOfBirth": dobController.text.toString(),
-          "mobileNumber": widgetMobile.toString()
-        };
+        payload = {...response, ...payload};
       }
       var res = await _myRepo.handleSubmitionApi(payload);
       print(res);

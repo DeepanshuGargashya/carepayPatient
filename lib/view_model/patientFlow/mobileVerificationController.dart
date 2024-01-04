@@ -18,6 +18,9 @@ import 'package:CarePay/screens/patientScreens/dashboard.dart';
 // import 'package:CarePay/screens/patientScreens/kycVerification.dart';
 import 'package:CarePay/screens/patientScreens/mobileVerification.dart';
 import 'package:CarePay/screens/patientScreens/patientLandingScreen.dart';
+import 'package:CarePay/screens/patientScreens/tradeFareFlow/addressDetail.dart';
+import 'package:CarePay/screens/patientScreens/tradeFareFlow/bankDetail.dart';
+import 'package:CarePay/screens/patientScreens/tradeFareFlow/employmentDetails.dart';
 import 'package:CarePay/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -217,7 +220,9 @@ class MobileVerificationController with ChangeNotifier {
         Loader().loaderClose(context);
         print("login response");
         final SharedPreferences pref = await SharedPreferences.getInstance();
+        print("login response 2");
         await pref.setString('userId', res['data'].toString());
+        print("login response 3");
         await pref.setBool('authenticated', true);
         print("patient id");
         print(res['data'].toString());
@@ -276,13 +281,13 @@ class MobileVerificationController with ChangeNotifier {
               path = const CreditDetails();
               break;
             case "Basic":
-              // path = AddressDetailScreen();
+              path = AddressDetailScreen();
               break;
             case "Address":
-              // path = EmploymentDetailScreen();
+              path = EmploymentDetailScreen();
               break;
             case "Occupation":
-              // path = BankDetailScreen();
+              path = BankDetailScreen();
               break;
             case "BankDetails":
               // path = BankAccountStatementScreen();
@@ -342,7 +347,8 @@ class MobileVerificationController with ChangeNotifier {
               // path = DashboardScreen();
               break;
             default:
-              path = const CreditDetails();
+              // path = const CreditDetails();
+              path = HomeScreen();
           }
         } else {
           SharedPreferences preferences = await SharedPreferences.getInstance();

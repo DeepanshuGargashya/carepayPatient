@@ -175,70 +175,96 @@ class _CreditDetailsState extends State<CreditDetails>
                                 FadeSlideTransition(
                                   animation: _formElementAnimation,
                                   additionalOffset: 2 * space,
-                                  child: Form(
-                                    key: _formKeyCreditAmount,
-                                    child: Container(
-                                      margin: EdgeInsets.fromLTRB(
-                                          0 * fem, 0 * fem, 0 * fem, 1.5 * fem),
-                                      child: TextFormField(
-                                        controller:
-                                            controller.creditAmountController,
-                                        onChanged: (value) {
-                                          if (value.isNotEmpty) {
-                                            _formKeyCreditAmount.currentState!
-                                                .validate();
-                                          }
-                                        },
-                                        keyboardType: TextInputType.number,
-                                        // maxLength: 10,
-                                        // autofocus: true,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          height: 1,
-                                          fontFamily: 'DM Sans',
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 50,
+                                        height: 20,
+                                        child: Image.asset(
+                                          'assets/images/rsIcon.png',
+                                          width: 50,
+                                          height: 20,
+                                          fit: BoxFit.contain,
+                                          // width: 6 * fem,
                                         ),
-                                        decoration: InputDecoration(
-                                          counterText: "",
-                                          contentPadding: EdgeInsets.fromLTRB(
-                                              8 * fem,
-                                              0 * fem,
-                                              8 * fem,
-                                              0 * fem),
-                                          fillColor: AppColors.ECEBFF,
-                                          filled: true,
-                                          hintText:
-                                              TextConstant.enterCreditAmount,
-                                          hintStyle: TextStyle(
-                                              // 'Work Sans',
-                                              fontFamily: "DM Sans",
-                                              fontSize: 14 * ffem,
-                                              fontWeight: FontWeight.w400,
-                                              height: 1.1725 * ffem / fem,
-                                              color: AppColors.black54,
-                                              letterSpacing: 0.5),
-                                          prefixIcon: Image.asset(
-                                            'assets/images/rsIcon.png',
-                                            height: 4,
-                                            fit: BoxFit.contain,
-                                            // width: 6 * fem,
-                                          ),
-                                          border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      4 * fem),
-                                              borderSide: BorderSide.none),
-                                        ),
-                                        // autovalidateMode: AutovalidateMode.onUserInteraction,
-                                        validator: (value) {
-                                          if (value!.trim().isEmpty) {
-                                            return TextConstant
-                                                .creditAmountRequired;
-                                          } else {
-                                            return null;
-                                          }
-                                        },
                                       ),
-                                    ),
+                                      Container(
+                                        // group167cge (455:270)
+                                        margin: EdgeInsets.fromLTRB(
+                                            0 * fem, 5 * fem, 0 * fem, 5 * fem),
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                1.3,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(12 * fem),
+                                        ),
+
+                                        child: Form(
+                                          key: _formKeyCreditAmount,
+                                          child: Container(
+                                            margin: EdgeInsets.fromLTRB(0 * fem,
+                                                0 * fem, 0 * fem, 1.5 * fem),
+                                            child: TextFormField(
+                                              controller: controller
+                                                  .creditAmountController,
+                                              onChanged: (value) {
+                                                if (value.isNotEmpty) {
+                                                  _formKeyCreditAmount
+                                                      .currentState!
+                                                      .validate();
+                                                }
+                                              },
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              // maxLength: 10,
+                                              // autofocus: true,
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                height: 1,
+                                                fontFamily: 'DM Sans',
+                                              ),
+                                              decoration: InputDecoration(
+                                                counterText: "",
+                                                contentPadding:
+                                                    EdgeInsets.fromLTRB(
+                                                        8 * fem,
+                                                        0 * fem,
+                                                        8 * fem,
+                                                        0 * fem),
+                                                fillColor: AppColors.ECEBFF,
+                                                filled: true,
+                                                hintText: TextConstant
+                                                    .enterCreditAmount,
+                                                hintStyle: TextStyle(
+                                                    // 'Work Sans',
+                                                    fontFamily: "DM Sans",
+                                                    fontSize: 14 * ffem,
+                                                    fontWeight: FontWeight.w400,
+                                                    height: 1.1725 * ffem / fem,
+                                                    color: AppColors.black54,
+                                                    letterSpacing: 0.5),
+                                                border: OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            4 * fem),
+                                                    borderSide:
+                                                        BorderSide.none),
+                                              ),
+                                              // autovalidateMode: AutovalidateMode.onUserInteraction,
+                                              validator: (value) {
+                                                if (value!.trim().isEmpty) {
+                                                  return TextConstant
+                                                      .creditAmountRequired;
+                                                } else {
+                                                  return null;
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],

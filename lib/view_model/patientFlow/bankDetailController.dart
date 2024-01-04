@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:CarePay/respository/patientResp/bankDetailRepository.dart';
 import 'package:CarePay/respository/patientResp/rpdRepsitory.dart';
+import 'package:CarePay/screens/patientScreens/tradeFareFlow/successfullyFetched.dart';
 // import 'package:CarePay/screens/patientScreens/bankAccountStatement.dart';
 // import 'package:CarePay/screens/patientScreens/bankDetail.dart';
 // import 'package:CarePay/screens/patientScreens/bankDetailError.dart';
@@ -13,6 +14,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../components/loader.dart';
+import '../../screens/patientScreens/tradeFareFlow/bankStatementCollection.dart';
 import '../../utils/utils.dart';
 
 class BankDetailController with ChangeNotifier {
@@ -21,6 +23,7 @@ class BankDetailController with ChangeNotifier {
   final _myRpdRepo = RpdRepository();
 
   final bankNameController = TextEditingController();
+  final branchCodeController = TextEditingController();
   final accountNumberController = TextEditingController();
   final confirmAccountNumberController = TextEditingController();
   final ifscCodeController = TextEditingController();
@@ -72,11 +75,14 @@ class BankDetailController with ChangeNotifier {
             res['branchName'] != null ? res['branchName'].toString() : "";
         this.bankNameController.text =
             res['branchName'] != null ? res['branchName'].toString() : "";
+        branchCodeController.text =
+            res['branchCode'] != null ? res['branchCode'].toString() : "";
 
         notifyListeners();
         Loader().loaderClose(context);
       } else {
         this.bankNameController.text = "";
+        branchCodeController.text = "";
         _bankName = "";
         Loader().loaderClose(context);
         print("inside null");
@@ -89,6 +95,7 @@ class BankDetailController with ChangeNotifier {
     } catch (e) {
       _bankName = "";
       this.bankNameController.text = "";
+      branchCodeController.text = "";
       Loader().loaderClose(context);
       // setState(() {
       _ifscErrorCode = true;
@@ -138,6 +145,9 @@ class BankDetailController with ChangeNotifier {
           response['ifscCode'] != null ? response['ifscCode'].toString() : "";
       this.bankNameController.text =
           response['bankName'] != null ? response['bankName'].toString() : "";
+      branchCodeController.text = response['branchCode'] != null
+          ? response['branchCode'].toString()
+          : "";
     } else {}
   }
 
@@ -163,11 +173,11 @@ class BankDetailController with ChangeNotifier {
       print(res);
       if (res['status'] == 200) {
         Loader().loaderClose(context);
-        // Navigator.push(
-        //     context,
-        //     PageTransition(
-        //         type: PageTransitionType.rightToLeftWithFade,
-        //         child: BAnkStatementCollection()));
+        Navigator.push(
+            context,
+            PageTransition(
+                type: PageTransitionType.rightToLeftWithFade,
+                child: BAnkStatementCollection()));
       } else {
         Utils.toastMessage(res['data'].toString());
         Loader().loaderClose(context);
@@ -211,11 +221,11 @@ class BankDetailController with ChangeNotifier {
       print(res);
       if (res['status'] == 200) {
         Loader().loaderClose(context);
-        // Navigator.push(
-        //     context,
-        //     PageTransition(
-        //         type: PageTransitionType.rightToLeftWithFade,
-        //         child: BAnkStatementCollection()));
+        Navigator.push(
+            context,
+            PageTransition(
+                type: PageTransitionType.rightToLeftWithFade,
+                child: const SuccessfullyFetched()));
       } else {
         Utils.toastMessage(res['data'].toString());
         Loader().loaderClose(context);
@@ -316,5 +326,21 @@ class BankDetailController with ChangeNotifier {
     //     PageTransition(
     //         type: PageTransitionType.rightToLeftWithFade,
     //         child: SuccessfullyFetched()));
+  }
+
+  handleTemp(context) {
+    Navigator.push(
+        context,
+        PageTransition(
+            type: PageTransitionType.rightToLeftWithFade,
+            child: const SuccessfullyFetched()));
+  }
+
+  handleSuccessfullyfetchedTemp(context) {
+    Navigator.push(
+        context,
+        PageTransition(
+            type: PageTransitionType.rightToLeftWithFade,
+            child: const BAnkStatementCollection()));
   }
 }

@@ -131,6 +131,8 @@ class TextConstant {
   static var enterBankName = 'Enter bank name';
   static var plsEnterBankName = 'Please enter bank name';
   static var branchName = 'Branch name';
+  static var enterBranchName = 'Enter bank name';
+  static var plsEnterBranchName = 'Please enter bank name';
   static var enterCity = 'Enter city name';
   static var enterStates = 'Enter state name';
 
@@ -477,6 +479,7 @@ class TextConstant {
   static var selectEmploymentType = 'Select employment type';
   // static var selectEmployer = 'Select employer';
   static var selectCurrentEmployer = 'Select current employer';
+  static var enterCurrentEmployer = 'Enter current employer';
   static var buisnessType = 'Type of business';
   static var buisnessName = 'Name of business';
   static var salaryCredit = 'Salary credit day';
@@ -705,8 +708,17 @@ class TextConstant {
   static var uploadBankAccount = 'Upload bank account statement.';
   static var selectOptionTo = 'Select option to proceed';
   static var proceedWithThis = 'Proceed with this account';
-  static var bankCollection = 'Bank Account Details Collection';
+  static var bankCollection = 'Bank Details';
   static var bankStatementCollection = 'Bank account statement collection';
+  static String bankPlease({
+    bool first = false,
+    bool second = false,
+  }) =>
+      first
+          ? 'Please enter details of your '
+          : second
+              ? 'salary bank account only'
+              : ' and make sure it has an active debit card or net banking.';
   static var toVerifyYour =
       'To verify your income, we need to access your bank statement for the latest 3 months. This data sharing is completely secured and encrypted. ';
 }

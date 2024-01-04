@@ -24,8 +24,7 @@ class AddressDetailState extends State<AddressDetailScreen>
   late final AnimationController _animationController;
 
   final _formKeyAddress = GlobalKey<FormState>();
-  final _formKeyLocality = GlobalKey<FormState>();
-  final _formKeyLandmark = GlobalKey<FormState>();
+
   final _formKeyPincode = GlobalKey<FormState>();
   final _formKeyCity = GlobalKey<FormState>();
   // final _formKeyState = GlobalKey<FormState>();
@@ -35,7 +34,7 @@ class AddressDetailState extends State<AddressDetailScreen>
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var fetchData =
           Provider.of<AddressDetailController>(context, listen: false);
-      // fetchData.initFetchData(context);
+      fetchData.initFetchData(context);
     });
     _animationController = AnimationController(
       vsync: this,
@@ -189,98 +188,101 @@ class AddressDetailState extends State<AddressDetailScreen>
                                   fontSize: 16 * fem),
                             )),
                       ),
-                      Container(
-                        // group167cge (455:270)
-                        margin: EdgeInsets.fromLTRB(
-                            0 * fem, 10 * fem, 0 * fem, 0 * fem),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4 * fem),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            FadeSlideTransition(
-                              animation: _formElementAnimation,
-                              additionalOffset: 0.0,
-                              child: Container(
-                                margin: EdgeInsets.fromLTRB(
-                                    0 * fem, 10 * fem, 0 * fem, 5 * fem),
-                                child:
-                                    Text.rich(TextSpan(children: <InlineSpan>[
-                                  TextSpan(
-                                    text: TextConstant.selectAddress,
-                                    style: TextStyle(
-                                      fontFamily: "DM Sans",
-                                      letterSpacing: 0.5,
-                                      fontSize: 14 * ffem,
-                                      fontWeight: FontWeight.w400,
-                                      height: 1.1725 * ffem / fem,
-                                      color: AppColors.black,
-                                    ),
-                                  ),
-                                ])),
-                              ),
-                            ),
-                            FadeSlideTransition(
-                              animation: _formElementAnimation,
-                              additionalOffset: 0.0,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: AppColors.ECEBFF,
-                                    borderRadius:
-                                        BorderRadius.circular(4 * fem)),
-                                child: ButtonTheme(
-                                    buttonColor: AppColors.ECEBFF,
-                                    alignedDropdown: true,
-                                    child: DropdownButton(
-                                      underline: SizedBox(),
-                                      dropdownColor: AppColors.ECEBFF,
-                                      icon:
-                                          const Icon(Icons.keyboard_arrow_down),
-                                      isExpanded: true,
-                                      elevation: 2,
-                                      hint: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child:
-                                            Text(TextConstant.selectFromBelow),
+                      Visibility(
+                        visible: controller.cibilVisibility,
+                        child: Container(
+                          // group167cge (455:270)
+                          margin: EdgeInsets.fromLTRB(
+                              0 * fem, 10 * fem, 0 * fem, 0 * fem),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4 * fem),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              FadeSlideTransition(
+                                animation: _formElementAnimation,
+                                additionalOffset: 0.0,
+                                child: Container(
+                                  margin: EdgeInsets.fromLTRB(
+                                      0 * fem, 10 * fem, 0 * fem, 5 * fem),
+                                  child:
+                                      Text.rich(TextSpan(children: <InlineSpan>[
+                                    TextSpan(
+                                      text: TextConstant.selectAddress,
+                                      style: TextStyle(
+                                        fontFamily: "DM Sans",
+                                        letterSpacing: 0.5,
+                                        fontSize: 14 * ffem,
+                                        fontWeight: FontWeight.w400,
+                                        height: 1.1725 * ffem / fem,
+                                        color: AppColors.black,
                                       ),
-                                      value:
-                                          controller.allAddressesDropdownValue,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium,
+                                    ),
+                                  ])),
+                                ),
+                              ),
+                              FadeSlideTransition(
+                                animation: _formElementAnimation,
+                                additionalOffset: 0.0,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: AppColors.ECEBFF,
                                       borderRadius:
-                                          BorderRadius.circular(4 * fem),
-                                      items: controller.allAddressesDropDown
-                                          .map((data) {
-                                        return DropdownMenuItem(
-                                            value: data,
-                                            child: Row(
-                                              children: [
-                                                // SizedBox(
-                                                //   width: 10,
-                                                // ),
-                                                Expanded(
-                                                  child: Text(
-                                                    data,
-                                                    style: TextStyle(
-                                                      fontSize: 15,
-                                                      fontFamily: 'DM Sans',
+                                          BorderRadius.circular(4 * fem)),
+                                  child: ButtonTheme(
+                                      buttonColor: AppColors.ECEBFF,
+                                      alignedDropdown: true,
+                                      child: DropdownButton(
+                                        underline: SizedBox(),
+                                        dropdownColor: AppColors.ECEBFF,
+                                        icon: const Icon(
+                                            Icons.keyboard_arrow_down),
+                                        isExpanded: true,
+                                        elevation: 2,
+                                        hint: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                              TextConstant.selectFromBelow),
+                                        ),
+                                        value: controller
+                                            .allAddressesDropdownValue,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium,
+                                        borderRadius:
+                                            BorderRadius.circular(4 * fem),
+                                        items: controller.allAddressesDropDown
+                                            .map((data) {
+                                          return DropdownMenuItem(
+                                              value: data,
+                                              child: Row(
+                                                children: [
+                                                  // SizedBox(
+                                                  //   width: 10,
+                                                  // ),
+                                                  Expanded(
+                                                    child: Text(
+                                                      data,
+                                                      style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontFamily: 'DM Sans',
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              ],
-                                            ));
-                                      }).toList(),
-                                      onChanged: (value) {
-                                        controller.setAllAddressesValue(
-                                            value.toString());
-                                      },
-                                    )),
+                                                ],
+                                              ));
+                                        }).toList(),
+                                        onChanged: (value) {
+                                          controller.setAllAddressesValue(
+                                              value.toString());
+                                        },
+                                      )),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
 
@@ -1029,8 +1031,8 @@ class AddressDetailState extends State<AddressDetailScreen>
                                               _formKeyCity.currentState!
                                                   .validate() &&
                                               controller.isEmptyy()) {
-                                            controller.handleTemp(context);
-                                            // controller.handleSubmition(context);
+                                            // controller.handleTemp(context);
+                                            controller.handleSubmition(context);
                                           } else {
                                             _formKeyAddress.currentState!
                                                 .validate();

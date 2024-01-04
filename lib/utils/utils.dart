@@ -59,7 +59,7 @@ class Utils {
                     Text(
                       title.toString(),
                       style: TextStyle(
-                        fontFamily: 'DM Sans',
+                          fontFamily: 'DM Sans',
                           color: AppColors.primaryPurple,
                           fontWeight: FontWeight.w700,
                           fontSize: 24 * fem),
@@ -229,7 +229,7 @@ class Utils {
               padding: const EdgeInsets.all(0),
               child: Container(
                 decoration:
-                BoxDecoration(borderRadius: BorderRadius.circular(30)),
+                    BoxDecoration(borderRadius: BorderRadius.circular(30)),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
