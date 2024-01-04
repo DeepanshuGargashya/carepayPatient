@@ -813,7 +813,12 @@ class _CreditDetailsState extends State<CreditDetails>
                                                       .validate() &&
                                                   _formKeyTreatmentName
                                                       .currentState!
-                                                      .validate()) {
+                                                      .validate() &&
+                                                  (controller.relationValue !=
+                                                          null &&
+                                                      controller
+                                                              .relationValue !=
+                                                          "")) {
                                                 if (controller.borrowForValue ==
                                                     "Someone else") {
                                                   if (_formKeyPatientName
@@ -834,7 +839,7 @@ class _CreditDetailsState extends State<CreditDetails>
                                                         .validate();
                                                     if (controller
                                                                 .relationValue ==
-                                                            null &&
+                                                            null ||
                                                         controller
                                                                 .relationValue ==
                                                             "") {

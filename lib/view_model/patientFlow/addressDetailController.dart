@@ -22,7 +22,7 @@ class AddressDetailController with ChangeNotifier {
   final cityController = TextEditingController();
   // final stateController = TextEditingController();
 
-  var _response = null;
+  var _response;
   get response => _response;
 
   var _cibilResponse = null;
@@ -318,18 +318,20 @@ class AddressDetailController with ChangeNotifier {
         "city": cityController.text.toString(),
         "state": stateDropdownValue.toString(),
         "pincode": int.parse(pincodeController.text.toString()),
-        // "residenceType": residenceDropdownValue.toString(),
         "formStatus": "",
       };
       print("payload");
       print(payload);
-      if (response != null && response != "") {
+      if (response != null) {
         print("inside payload edit");
-        payload = {
-          // ...response,
-          ...payload,
-        };
-        // payload = {...payload};
+        print(response);
+        print(payload);
+        print({...response, ...payload});
+        // var temp = {...response, ...payload};
+        // print(temp);
+        // payload = {...temp};
+        // payload = {...response, ...payload};
+        payload = {...payload};
       }
       print("pass response");
       var res = await _myRepo.handleSubmitionApi(payload);
