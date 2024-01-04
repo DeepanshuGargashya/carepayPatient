@@ -151,8 +151,10 @@ class AddressDetailController with ChangeNotifier {
       // print(response['mobileNumber']);
       if (response['addressType'] != null &&
           response['addressType'].toString() != "null") {
-        _residenceDropdownValue = response['addressType'] != null
-            ? response['addressType'].toString()
+        _addressTypeValue = response['addressType'] != null
+            ? response['addressType'].toString().toLowerCase() == "permanent"
+                ? "Permanent"
+                : "Current"
             : "";
       }
       addressController.text =
@@ -316,13 +318,17 @@ class AddressDetailController with ChangeNotifier {
         "city": cityController.text.toString(),
         "state": stateDropdownValue.toString(),
         "pincode": pincodeController.text.toString(),
+        "residenceType": residenceDropdownValue.toString(),
         "formStatus": "",
       };
-
-      if (response != "" && response != null) {
+      print("payload");
+      print(payload);
+      if (response != null && response.toString() != "") {
         payload = {...response, ...payload};
       }
+      print("pass response");
       var res = await _myRepo.handleSubmitionApi(payload);
+      print("pass get response");
 
       print(res);
       // print(res['msg'].toString());
