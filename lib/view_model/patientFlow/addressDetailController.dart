@@ -313,18 +313,23 @@ class AddressDetailController with ChangeNotifier {
       print(response);
       var payload = {
         "userId": userId.toString(),
-        "addressType": residenceDropdownValue.toString(),
+        "addressType": addressTypeValue.toString(),
         "address": addressController.text.toString(),
         "city": cityController.text.toString(),
         "state": stateDropdownValue.toString(),
-        "pincode": pincodeController.text.toString(),
-        "residenceType": residenceDropdownValue.toString(),
+        "pincode": int.parse(pincodeController.text.toString()),
+        // "residenceType": residenceDropdownValue.toString(),
         "formStatus": "",
       };
       print("payload");
       print(payload);
-      if (response != null && response.toString() != "") {
-        payload = {...response, ...payload};
+      if (response != null && response != "") {
+        print("inside payload edit");
+        payload = {
+          // ...response,
+          ...payload,
+        };
+        // payload = {...payload};
       }
       print("pass response");
       var res = await _myRepo.handleSubmitionApi(payload);
@@ -348,7 +353,8 @@ class AddressDetailController with ChangeNotifier {
         Utils.toastMessage(res['data'].toString());
       }
     } catch (e) {
-      Loader().loaderClose(context);
+      print(e);
+      // Loader().loaderClose(context);
       Utils.toastMessage("Check Internet Connection");
     }
   }

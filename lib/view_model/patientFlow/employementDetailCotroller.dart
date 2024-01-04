@@ -298,7 +298,8 @@ class EmploymentDetailController with ChangeNotifier {
           "employmentType": employmentTypeDropdownValue.toString() == "Salaried"
               ? "SALARIED"
               : "SELF_EMPLOYED",
-          "netTakeHomeSalary": monthlyIncomeController.text.toString(),
+          "netTakeHomeSalary":
+              int.parse(monthlyIncomeController.text.toString()),
           "organizationName":
               employmentTypeDropdownValue.toString() == "Salaried"
                   ? currentCompanyNameController.text.toString()
@@ -309,15 +310,18 @@ class EmploymentDetailController with ChangeNotifier {
           "typeOfBusiness": employmentTypeDropdownValue.toString() != "Salaried"
               ? buisnessTypeDropdownValue.toString()
               : "",
-          "monthlyFamilyIncome": monthlyFamilyIncomeController.text.toString(),
+          "monthlyFamilyIncome":
+              int.parse(monthlyFamilyIncomeController.text.toString()),
           "formStatus": ""
         };
 
         if (response != "" && response != null) {
           print('response not null');
+          // payload = {...payload};
           payload = {...response, ...payload};
         }
 
+        print("mix payload");
         print(payload);
         var res = await _myRepo.handleSubmitionApi(payload);
 
